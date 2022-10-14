@@ -67,6 +67,7 @@ func (g *graph) addEdge(from, to, weight int) {
 func newGraph(v int) *graph {
 
 	g := &graph{v: v, e: 0}
+	g.adj = make([]map[int]int, v)
 	for i := 0; i < v; i++ {
 		g.adj[i] = make(map[int]int)
 	}
@@ -86,27 +87,27 @@ type coord struct {
 func minPathSum(grid [][]int) int {
 	idHM := make(map[coord]int)
 	id := 0
-	for x, _ := range grid {
-		for y, _ := range grid[x] {
-			id++
+	for y := range grid {
+		for x := range grid[y] {
 			idHM[coord{x, y}] = id
+			id++
 		}
 	}
 	fmt.Printf("coord map: %v", idHM)
 
 	g := newGraph(len(idHM))
-	for x, _ := range grid {
-		for y, _ := range grid[x] {
+	for y := range grid {
+		for x := range grid[y] {
 			from := idHM[coord{x, y}]
 			right, rightOk := idHM[coord{x + 1, y}]
 			down, downOk := idHM[coord{x, y + 1}]
 
 			if rightOk {
-				rightWeight := grid[x+1][y]
+				rightWeight := grid[y][x+1]
 				g.addEdge(from, right, rightWeight)
 			}
 			if downOk {
-				downWeight := grid[x][y+1]
+				downWeight := grid[y+1][x]
 				g.addEdge(from, down, downWeight)
 			}
 		}
