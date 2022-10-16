@@ -79,9 +79,35 @@ type coord struct {
 	y int
 }
 
-// func (c coord) String() string {
-// 	return fmt.Sprintf("x: %d, y: %d", c.x, c.y)
-// }
+func dfsOrder(g *graph) []int {
+	marked := make([]bool, g.v)
+	edgeTo := make([]int, g.v)
+	topoStack := []int{}
+	for i := range edgeTo {
+		edgeTo[i] = -1
+	}
+	var dfs func(v int)
+	dfs = func(v int) {
+		marked[v] = true
+		adj := g.adj[v]
+		neighbors := make([]int, len(adj))
+		i := 0
+		for k := range adj {
+			neighbors[i] = k
+			i++
+		}
+		for _, neighbor := range neighbors {
+			if !marked[neighbor] {
+				edgeTo[neighbor] = v
+				dfs(neighbor)
+			}
+		}
+		topoStack = append(topoStack, v)
+	}
+	dfs(0)
+	return topoStack
+
+}
 
 // @lc code=start
 func minPathSum(grid [][]int) int {
@@ -93,7 +119,7 @@ func minPathSum(grid [][]int) int {
 			id++
 		}
 	}
-	fmt.Printf("coord map: %v", idHM)
+	fmt.Printf("coord map: %v\n", idHM)
 
 	g := newGraph(len(idHM))
 	for y := range grid {
@@ -112,6 +138,10 @@ func minPathSum(grid [][]int) int {
 			}
 		}
 	}
+
+	topoOrder := dfsOrder(g)
+	fmt.Printf("topo stack: %v\n", topoOrder)
+
 	return 0
 }
 
