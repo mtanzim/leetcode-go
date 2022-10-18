@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 /*
  * @lc app=leetcode id=64 lang=golang
@@ -79,13 +82,22 @@ type coord struct {
 	y int
 }
 
+func prepend[T any](s []T, i T, defaultVal T) []T {
+	s = append(s, defaultVal)
+	copy(s[1:], s)
+	s[0] = i
+	return s
+}
+
 func dfsOrder(g *graph) []int {
 	marked := make([]bool, g.v)
 	edgeTo := make([]int, g.v)
+
 	topoStack := []int{}
 	for i := range edgeTo {
 		edgeTo[i] = -1
 	}
+
 	var dfs func(v int)
 	dfs = func(v int) {
 		marked[v] = true
@@ -102,9 +114,12 @@ func dfsOrder(g *graph) []int {
 				dfs(neighbor)
 			}
 		}
-		topoStack = append(topoStack, v)
+		// TODO: is topostack needed?
+		topoStack = prepend[int](topoStack, v, 0)
+
 	}
 	dfs(0)
+
 	return topoStack
 
 }
@@ -140,9 +155,35 @@ func minPathSum(grid [][]int) int {
 	}
 
 	topoOrder := dfsOrder(g)
+	distTo := make([]float64, g.v)
+	edgeTo := make([]int, g.v)
+	for i := range distTo {
+		distTo[i] = math.Inf(1)
+	}
+	for i := range edgeTo {
+		edgeTo[i] = -1
+	}
+	distTo[0] = 0.0
 	fmt.Printf("topo stack: %v\n", topoOrder)
+	for _, v := range topoOrder {
+		distTo, edgeTo = relax(g, v, distTo, edgeTo)
+	}
+	fmt.Printf("dist to: %v\n", distTo)
+	fmt.Printf("edge to: %v\n", edgeTo)
 
 	return 0
+}
+
+func relax(g *graph, v int, distTo []float64, edgeTo []int) ([]float64, []int) {
+	adj := g.adj[v]
+	from := v
+	for to, edgeWeight := range adj {
+		if distTo[to] > distTo[from]+float64(edgeWeight) {
+			distTo[to] = distTo[from] + float64(edgeWeight)
+			edgeTo[to] = from
+		}
+	}
+	return distTo, edgeTo
 }
 
 // @lc code=end
