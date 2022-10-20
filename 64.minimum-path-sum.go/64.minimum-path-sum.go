@@ -53,6 +53,7 @@ import (
  *
  *
  */
+// @lc code=start
 
 type weight = int
 
@@ -82,7 +83,7 @@ type coord struct {
 	y int
 }
 
-func prepend[T any](s []T, i T, defaultVal T) []T {
+func prepend(s []int, i int, defaultVal int) []int {
 	s = append(s, defaultVal)
 	copy(s[1:], s)
 	s[0] = i
@@ -115,7 +116,7 @@ func dfsOrder(g *graph, sourceId int) []int {
 			}
 		}
 		// TODO: is topostack needed?
-		topoStack = prepend[int](topoStack, v, 0)
+		topoStack = prepend(topoStack, v, 0)
 
 	}
 	dfs(sourceId)
@@ -124,7 +125,6 @@ func dfsOrder(g *graph, sourceId int) []int {
 
 }
 
-// @lc code=start
 func minPathSum(grid [][]int) int {
 	idHM := make(map[coord]int)
 	id := 0
