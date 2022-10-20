@@ -89,7 +89,7 @@ func prepend[T any](s []T, i T, defaultVal T) []T {
 	return s
 }
 
-func dfsOrder(g *graph) []int {
+func dfsOrder(g *graph, sourceId int) []int {
 	marked := make([]bool, g.v)
 	edgeTo := make([]int, g.v)
 
@@ -118,7 +118,7 @@ func dfsOrder(g *graph) []int {
 		topoStack = prepend[int](topoStack, v, 0)
 
 	}
-	dfs(0)
+	dfs(sourceId)
 
 	return topoStack
 
@@ -154,7 +154,10 @@ func minPathSum(grid [][]int) int {
 		}
 	}
 
-	topoOrder := dfsOrder(g)
+	sourceId := idHM[coord{0, 0}]
+	destId := idHM[coord{len(grid[0]) - 1, len(grid) - 1}]
+
+	topoOrder := dfsOrder(g, sourceId)
 	distTo := make([]float64, g.v)
 	edgeTo := make([]int, g.v)
 	for i := range distTo {
@@ -171,7 +174,8 @@ func minPathSum(grid [][]int) int {
 	fmt.Printf("dist to: %v\n", distTo)
 	fmt.Printf("edge to: %v\n", edgeTo)
 
-	return 0
+	startingWeight := grid[0][0]
+	return startingWeight + int(distTo[destId])
 }
 
 func relax(g *graph, v int, distTo []float64, edgeTo []int) ([]float64, []int) {
