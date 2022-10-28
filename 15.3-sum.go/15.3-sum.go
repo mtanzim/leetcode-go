@@ -1,3 +1,5 @@
+package main
+
 /*
  * @lc app=leetcode id=15 lang=golang
  *
@@ -66,6 +68,7 @@ func twoSum(nums []int, target int) []int {
 	for i, v := range nums {
 		hm[v] = i
 	}
+
 	for i := range nums {
 		remaining := target - nums[i]
 		if j, ok := hm[remaining]; ok && j != i {
@@ -77,14 +80,21 @@ func twoSum(nums []int, target int) []int {
 
 func threeSum(nums []int) [][]int {
 
-	combos := [][]int
+	combos := [][]int{}
 	for i := 0; i < len(nums); i++ {
 		outer := nums[i]
-		twoSumVal := twoSum(nums[i:], outer)
+		twoSumVal := twoSum(nums, outer)
+		if len(twoSumVal) == 2 {
+			j := twoSumVal[0]
+			k := twoSumVal[1]
+
+			if outer+nums[j]+nums[k] == 0 && i != j && i != k {
+				combos = append(combos, []int{outer, nums[j], nums[k]})
+			}
+		}
 
 	}
-
+	return combos
 }
 
 // @lc code=end
-
