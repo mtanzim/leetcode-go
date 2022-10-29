@@ -99,9 +99,19 @@ func threeSum(nums []int) [][]int {
 	combos := [][]int{}
 	combosHM := make(map[string]struct{})
 
+	twoSumsCache := make(map[int][][]int)
+
 	for i := 0; i < len(nums); i++ {
 		target := 0 - nums[i]
-		twoSumVals := twoSum(nums, target)
+
+		var twoSumVals [][]int
+		if cached, ok := twoSumsCache[target]; ok {
+			twoSumVals = cached
+		} else {
+			twoSumVals = twoSum(nums, target)
+			twoSumsCache[target] = twoSumVals
+		}
+
 		for _, twoSumVal := range twoSumVals {
 			if len(twoSumVal) == 2 {
 				j := twoSumVal[0]
