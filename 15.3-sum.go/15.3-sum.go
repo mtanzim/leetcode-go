@@ -107,14 +107,8 @@ func threeSum(nums []int) [][]int {
 		if _, ok := twoSumsCache[target]; ok {
 			continue
 		}
-
-		var twoSumVals [][]int
-		if cached, ok := twoSumsCache[target]; ok {
-			twoSumVals = cached
-		} else {
-			twoSumVals = twoSum(nums, target)
-			twoSumsCache[target] = twoSumVals
-		}
+		twoSumVals := twoSum(nums, target)
+		twoSumsCache[target] = twoSumVals
 		for _, twoSumVal := range twoSumVals {
 			if len(twoSumVal) == 2 {
 				j := twoSumVal[0]
