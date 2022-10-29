@@ -97,7 +97,6 @@ func arrToStr(a []int) string {
 func threeSum(nums []int) [][]int {
 
 	combos := [][]int{}
-	combosHM := make(map[string]struct{})
 
 	twoSumsCache := make(map[int][][]int)
 
@@ -111,24 +110,30 @@ func threeSum(nums []int) [][]int {
 			twoSumVals = twoSum(nums, target)
 			twoSumsCache[target] = twoSumVals
 		}
-
 		for _, twoSumVal := range twoSumVals {
 			if len(twoSumVal) == 2 {
 				j := twoSumVal[0]
 				k := twoSumVal[1]
-
 				if nums[i]+nums[j]+nums[k] == 0 && i != j && i != k && j != k {
 					newEntry := []int{nums[i], nums[j], nums[k]}
-					sort.Ints(newEntry)
-					if _, ok := combosHM[arrToStr(newEntry)]; !ok {
-						combos = append(combos, newEntry)
-						combosHM[arrToStr(newEntry)] = struct{}{}
-					}
+					combos = append(combos, newEntry)
 				}
 			}
 		}
 	}
-	return combos
+
+	// dedupe combos
+	combosHM := make(map[string]struct{})
+	transformedCombos := [][]int{}
+	for _, combo := range combos {
+		sort.Ints(combo)
+		if _, ok := combosHM[arrToStr(combo)]; !ok {
+			combosHM[arrToStr(combo)] = struct{}{}
+			transformedCombos = append(transformedCombos, combo)
+		}
+
+	}
+	return transformedCombos
 }
 
 // @lc code=end
