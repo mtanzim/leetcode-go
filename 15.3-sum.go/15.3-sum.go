@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"sort"
+	"strings"
+)
+
 /*
  * @lc app=leetcode id=15 lang=golang
  *
@@ -63,36 +69,54 @@ package main
  */
 
 // @lc code=start
-func twoSum(nums []int, target int) []int {
+func twoSum(nums []int, target int) [][]int {
 	hm := make(map[int]int)
 	for i, v := range nums {
 		hm[v] = i
 	}
 
+	combos := [][]int{}
+
 	for i := range nums {
 		remaining := target - nums[i]
 		if j, ok := hm[remaining]; ok && j != i {
-			return []int{i, j}
+			combos = append(combos, []int{i, j})
 		}
 	}
-	return []int{}
+	return combos
+}
+
+func arrToStr(a []int) string {
+	var sb strings.Builder
+	for _, v := range a {
+		sb.WriteString(fmt.Sprintf("%d", v))
+	}
+	return sb.String()
 }
 
 func threeSum(nums []int) [][]int {
 
 	combos := [][]int{}
-	for i := 0; i < len(nums); i++ {
-		outer := nums[i]
-		twoSumVal := twoSum(nums, outer)
-		if len(twoSumVal) == 2 {
-			j := twoSumVal[0]
-			k := twoSumVal[1]
+	combosHM := make(map[string]struct{})
 
-			if outer+nums[j]+nums[k] == 0 && i != j && i != k {
-				combos = append(combos, []int{outer, nums[j], nums[k]})
+	for i := 0; i < len(nums); i++ {
+		target := 0 - nums[i]
+		twoSumVals := twoSum(nums, target)
+		for _, twoSumVal := range twoSumVals {
+			if len(twoSumVal) == 2 {
+				j := twoSumVal[0]
+				k := twoSumVal[1]
+
+				if nums[i]+nums[j]+nums[k] == 0 && i != j && i != k && j != k {
+					newEntry := []int{nums[i], nums[j], nums[k]}
+					sort.Ints(newEntry)
+					if _, ok := combosHM[arrToStr(newEntry)]; !ok {
+						combos = append(combos, newEntry)
+						combosHM[arrToStr(newEntry)] = struct{}{}
+					}
+				}
 			}
 		}
-
 	}
 	return combos
 }
