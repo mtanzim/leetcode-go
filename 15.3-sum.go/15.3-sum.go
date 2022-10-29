@@ -99,9 +99,14 @@ func threeSum(nums []int) [][]int {
 	combos := [][]int{}
 
 	twoSumsCache := make(map[int][][]int)
+	combosHM := make(map[string]struct{})
 
 	for i := 0; i < len(nums); i++ {
 		target := 0 - nums[i]
+
+		if _, ok := twoSumsCache[target]; ok {
+			continue
+		}
 
 		var twoSumVals [][]int
 		if cached, ok := twoSumsCache[target]; ok {
@@ -116,24 +121,18 @@ func threeSum(nums []int) [][]int {
 				k := twoSumVal[1]
 				if nums[i]+nums[j]+nums[k] == 0 && i != j && i != k && j != k {
 					newEntry := []int{nums[i], nums[j], nums[k]}
-					combos = append(combos, newEntry)
+					sort.Ints(newEntry)
+					strRep := arrToStr(newEntry)
+					if _, ok := combosHM[strRep]; !ok {
+						combos = append(combos, newEntry)
+						combosHM[strRep] = struct{}{}
+					}
 				}
 			}
 		}
 	}
 
-	// dedupe combos
-	combosHM := make(map[string]struct{})
-	transformedCombos := [][]int{}
-	for _, combo := range combos {
-		sort.Ints(combo)
-		if _, ok := combosHM[arrToStr(combo)]; !ok {
-			combosHM[arrToStr(combo)] = struct{}{}
-			transformedCombos = append(transformedCombos, combo)
-		}
-
-	}
-	return transformedCombos
+	return combos
 }
 
 // @lc code=end
