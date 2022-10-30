@@ -57,7 +57,7 @@ type TreeNode struct {
 
 // @lc code=start
 
-func preOrder(node *TreeNode, hm map[string]int, curDepth int, prefix rune) (map[string]int, int) {
+func traverse(node *TreeNode, hm map[string]int, curDepth int, prefix rune) (map[string]int, int) {
 	key := fmt.Sprintf("%d%c", curDepth, prefix)
 	if node == nil {
 		hm[key] = -101
@@ -66,8 +66,8 @@ func preOrder(node *TreeNode, hm map[string]int, curDepth int, prefix rune) (map
 
 	hm[key] = node.Val
 
-	_, ld := preOrder(node.Left, hm, curDepth+1, 'l')
-	_, rd := preOrder(node.Right, hm, curDepth+1, 'r')
+	_, ld := traverse(node.Left, hm, curDepth+1, 'l')
+	_, rd := traverse(node.Right, hm, curDepth+1, 'r')
 	var maxDepth int
 	if ld > rd {
 		maxDepth = ld
@@ -78,8 +78,8 @@ func preOrder(node *TreeNode, hm map[string]int, curDepth int, prefix rune) (map
 }
 func isSymmetricOld(root *TreeNode) bool {
 
-	lh, lDepth := preOrder(root.Left, make(map[string]int), 1, 'l')
-	rh, rDepth := preOrder(root.Right, make(map[string]int), 1, 'r')
+	lh, lDepth := traverse(root.Left, make(map[string]int), 1, 'l')
+	rh, rDepth := traverse(root.Right, make(map[string]int), 1, 'r')
 
 	if len(lh) != len(rh) {
 		return false
