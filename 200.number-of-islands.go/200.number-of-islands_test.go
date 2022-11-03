@@ -27,13 +27,25 @@ func Test_numIslands(t *testing.T) {
 
 		{
 			want: 3,
-			name: "basic",
+			name: "basic2",
 			args: args{
 				grid: [][]byte{
 					[]byte{'1', '1', '0', '0', '0'},
 					[]byte{'1', '1', '0', '0', '0'},
 					[]byte{'0', '0', '1', '0', '0'},
 					[]byte{'0', '0', '0', '1', '1'},
+				},
+			},
+		},
+
+		{
+			want: 1,
+			name: "failing on leetcode",
+			args: args{
+				grid: [][]byte{
+					[]byte{'1', '1', '1'},
+					[]byte{'0', '1', '0'},
+					[]byte{'1', '1', '1'},
 				},
 			},
 		},

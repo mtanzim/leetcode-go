@@ -90,18 +90,18 @@ func numIslands(grid [][]byte) int {
 		top := coord{x, y - 1}
 		neighbors := []coord{}
 		for _, v := range []coord{left, right} {
-			if v.x > 0 && v.x < width {
+			if v.x >= 0 && v.x < width {
 				neighbors = append(neighbors, v)
 			}
 		}
 		for _, v := range []coord{top, bottom} {
-			if v.y > 0 && v.y < height {
+			if v.y >= 0 && v.y < height {
 				neighbors = append(neighbors, v)
 
 			}
 		}
 		for _, n := range neighbors {
-			if !marked[n] && grid[n.y][n.x] != byte('0') {
+			if !marked[n] && grid[n.y][n.x] == byte('1') {
 				dfs(n)
 			}
 		}
@@ -111,7 +111,6 @@ func numIslands(grid [][]byte) int {
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			coord := coord{x, y}
-			// fmt.Printf("%v: %c", coord, grid[y][x])
 			if !marked[coord] && grid[coord.y][coord.x] == byte('1') {
 				dfs(coord)
 				count++
