@@ -81,38 +81,46 @@ func existsInner(board [][]byte, word string, marked map[coord]bool, neighbors m
 
 	height := len(board)
 	width := len(board[0])
+
+	doesExist := false
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			c := coord{x, y}
-			if rune(board[y][x]) == rune(word[0]) && !marked[c] && neighbors[c] {
-				marked[c] = true
-				left := coord{x - 1, y}
-				right := coord{x + 1, y}
-				bottom := coord{x, y + 1}
-				top := coord{x, y - 1}
-				newNeighbors := make(map[coord]bool)
-				for _, v := range []coord{left, right} {
-					if v.x >= 0 && v.x < width {
-						newNeighbors[v] = true
+			if rune(board[y][x]) == rune(word[0]) {
+				if !marked[c] && neighbors[c] {
+					marked[c] = true
+					left := coord{x - 1, y}
+					right := coord{x + 1, y}
+					bottom := coord{x, y + 1}
+					top := coord{x, y - 1}
+					newNeighbors := make(map[coord]bool)
+					for _, v := range []coord{left, right} {
+						if v.x >= 0 && v.x < width {
+							newNeighbors[v] = true
+						}
+					}
+					for _, v := range []coord{top, bottom} {
+						if v.y >= 0 && v.y < height {
+							newNeighbors[v] = true
+						}
+					}
+					doesExist = existsInner(board, word[1:], marked, newNeighbors)
+					if doesExist {
+						return doesExist
 					}
 				}
-				for _, v := range []coord{top, bottom} {
-					if v.y >= 0 && v.y < height {
-						newNeighbors[v] = true
-					}
-				}
-				return existsInner(board, word[1:], marked, newNeighbors)
 			}
 		}
 	}
 
-	return false
+	return doesExist
 }
 
 func exist(board [][]byte, word string) bool {
 	neighbors := make(map[coord]bool)
 	height := len(board)
 	width := len(board[0])
+
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
 			neighbors[coord{x, y}] = true
