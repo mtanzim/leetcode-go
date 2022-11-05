@@ -49,19 +49,22 @@ func permute(nums []int) [][]int {
 	}
 
 	if len(nums) > 1 {
+		a := nums[0]
+		rest := permute(nums[1:])
 		results := [][]int{}
-		for i := 0; i < len(nums); i++ {
-			a := nums[i]
-			remainingArr := append(nums[0:i], nums[i+1:]...)
-			rest := permute(remainingArr)
-
-			for _, v := range rest {
-				left := []int{a}
-				left = append(left, v...)
-				right := v
-				right = append(right, a)
-				results = append(results, left, right)
+		for _, curArr := range rest {
+			for i := 0; i < len(curArr); i++ {
+				// left and in between
+				newEntry := append([]int{}, curArr[:i]...)
+				newEntry = append(newEntry, a)
+				newEntry = append(newEntry, curArr[i:]...)
+				results = append(results, newEntry)
 			}
+			// right
+			newEntryRight := append([]int{}, curArr...)
+			newEntryRight = append(newEntryRight, a)
+			results = append(results, newEntryRight)
+
 		}
 
 		return results

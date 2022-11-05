@@ -27,7 +27,14 @@ func Test_permute(t *testing.T) {
 		{
 			name: "base with len 3",
 			args: args{[]int{1, 2, 3}},
-			want: [][]int{[]int{1, 2, 3}, []int{1, 3, 2}, []int{2, 1, 3}},
+			want: [][]int{
+				[]int{1, 2, 3},
+				[]int{2, 1, 3},
+				[]int{2, 3, 1},
+				[]int{1, 3, 2},
+				[]int{3, 1, 2},
+				[]int{3, 2, 1},
+			},
 		},
 	}
 	for _, tt := range tests {
