@@ -34,6 +34,28 @@ func Test_exist(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "double positive",
+			want: true,
+			args: args{
+				word: "ab",
+				board: [][]byte{
+					[]byte{'a', 'b', 'c', 'e'},
+					[]byte{'s', 'f', 'c', 's'},
+				},
+			},
+		},
+		{
+			name: "double negative",
+			want: false,
+			args: args{
+				word: "ae",
+				board: [][]byte{
+					[]byte{'a', 'b', 'c', 'e'},
+					[]byte{'s', 'f', 'c', 's'},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
