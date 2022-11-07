@@ -105,10 +105,13 @@ func existsInner(board [][]byte, word string, marked map[coord]bool, neighbors m
 						}
 					}
 					doesExist = existsInner(board, word[1:], marked, newNeighbors)
+
 					if doesExist {
 						return doesExist
 					}
 				}
+				// reset marked
+				marked = make(map[coord]bool)
 			}
 		}
 	}
