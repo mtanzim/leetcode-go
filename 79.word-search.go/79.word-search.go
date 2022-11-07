@@ -114,7 +114,11 @@ func dfs(board [][]byte, word string, marked map[coord]bool, curCoord coord) boo
 	}
 	found := false
 	for c := range neighbors {
-		found = found || dfs(board, word[1:], marked, c)
+		markedCopy := make(map[coord]bool)
+		for k, v := range marked {
+			markedCopy[k] = v
+		}
+		found = found || dfs(board, word[1:], markedCopy, c)
 	}
 	return found
 }
@@ -126,6 +130,7 @@ func exist(board [][]byte, word string) bool {
 	doesExist := false
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
+
 			doesExist = doesExist || dfs(board, word, make(map[coord]bool), coord{x, y})
 		}
 	}
