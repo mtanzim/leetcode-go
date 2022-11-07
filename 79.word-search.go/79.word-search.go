@@ -71,7 +71,8 @@ type coord struct {
 	y int
 }
 
-func existsInner(board [][]byte, word string, marked map[coord]bool, neighbors map[coord]bool) bool {
+func dfs(board [][]byte, word string, marked map[coord]bool, curCoord coord) bool {
+
 	if len(board) < 1 {
 		return true
 	}
@@ -79,57 +80,57 @@ func existsInner(board [][]byte, word string, marked map[coord]bool, neighbors m
 		return true
 	}
 
+	x := curCoord.x
+	y := curCoord.y
+	first := string(word[0])
+	curLetter := string(board[y][x])
+
+	if curLetter != first {
+		return false
+	}
+
+	if curLetter == first && len(word) == 1 {
+		return true
+	}
+	marked[curCoord] = true
+
+	height := len(board)
+	width := len(board[0])
+
+	left := coord{x - 1, y}
+	right := coord{x + 1, y}
+	bottom := coord{x, y + 1}
+	top := coord{x, y - 1}
+	neighbors := make(map[coord]bool)
+	for _, v := range []coord{left, right} {
+		if v.x >= 0 && v.x < width && !marked[v] {
+			neighbors[v] = true
+		}
+	}
+	for _, v := range []coord{top, bottom} {
+		if v.y >= 0 && v.y < height && !marked[v] {
+			neighbors[v] = true
+		}
+	}
+	found := false
+	for c := range neighbors {
+		found = found || dfs(board, word[1:], marked, c)
+	}
+	return found
+}
+
+func exist(board [][]byte, word string) bool {
 	height := len(board)
 	width := len(board[0])
 
 	doesExist := false
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			c := coord{x, y}
-			if rune(board[y][x]) == rune(word[0]) {
-				if !marked[c] && neighbors[c] {
-					marked[c] = true
-					left := coord{x - 1, y}
-					right := coord{x + 1, y}
-					bottom := coord{x, y + 1}
-					top := coord{x, y - 1}
-					newNeighbors := make(map[coord]bool)
-					for _, v := range []coord{left, right} {
-						if v.x >= 0 && v.x < width {
-							newNeighbors[v] = true
-						}
-					}
-					for _, v := range []coord{top, bottom} {
-						if v.y >= 0 && v.y < height {
-							newNeighbors[v] = true
-						}
-					}
-					doesExist = existsInner(board, word[1:], marked, newNeighbors)
-
-					if doesExist {
-						return doesExist
-					}
-				}
-				// reset marked
-				marked = make(map[coord]bool)
-			}
+			doesExist = doesExist || dfs(board, word, make(map[coord]bool), coord{x, y})
 		}
 	}
 
 	return doesExist
-}
-
-func exist(board [][]byte, word string) bool {
-	neighbors := make(map[coord]bool)
-	height := len(board)
-	width := len(board[0])
-
-	for y := 0; y < height; y++ {
-		for x := 0; x < width; x++ {
-			neighbors[coord{x, y}] = true
-		}
-	}
-	return existsInner(board, word, make(map[coord]bool), neighbors)
 
 }
 

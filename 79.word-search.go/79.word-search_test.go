@@ -82,6 +82,17 @@ func Test_exist(t *testing.T) {
 				},
 			},
 		},
+		{
+			name: "failing on leetcode again again!!",
+			want: true,
+			args: args{
+				word: "acdb",
+				board: [][]byte{
+					[]byte{'a', 'b'},
+					[]byte{'c', 'd'},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
