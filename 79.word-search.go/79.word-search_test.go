@@ -93,7 +93,7 @@ func Test_exist(t *testing.T) {
 				},
 			},
 		},
-		// the trick here was to reset marked hashman
+		// the trick here was to wind back the marked hashmap
 		// the reason is that hash maps are pass by reference
 		// therefore, they get mutated through the stack
 		// when the stack unwinds: the hashmap must be
