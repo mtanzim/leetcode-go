@@ -52,7 +52,7 @@ package main
  */
 
 // @lc code=start
-func climbStairs(n int) int {
+func climbStairsRecursive(n int) int {
 	if n <= 0 {
 		return 0
 	}
@@ -63,6 +63,27 @@ func climbStairs(n int) int {
 		return 1 + climbStairs(n-1)
 	}
 	return climbStairs(n-1) + climbStairs(n-2)
+}
+
+func climbStairs(n int) int {
+
+	hm := make(map[int]int)
+	hm[0] = 0
+	hm[1] = 1
+	hm[2] = 2
+
+	if n <= 2 {
+		return hm[n]
+	}
+
+	count := 0
+	for i := 3; i <= n; i++ {
+		count = hm[i-1] + hm[i-2]
+		hm[i] = count
+	}
+
+	return count
+
 }
 
 // @lc code=end
