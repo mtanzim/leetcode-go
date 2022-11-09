@@ -56,8 +56,33 @@ package main
  */
 
 // @lc code=start
-func rob(nums []int) int {
-    
-}
-// @lc code=end
 
+func max(nums []int) int {
+	if len(nums) < 1 {
+		return 0
+	}
+	max := nums[0]
+	for _, v := range nums {
+		if v > max {
+			max = v
+		}
+	}
+	return max
+}
+
+func rob(nums []int) int {
+
+	if len(nums) <= 2 {
+		return max(nums)
+	}
+	maxAmt := 0;
+	for i:=0; i < len(nums) - 1; i++ {
+		s := nums[i]
+		remaining := nums[i+2:]
+		canRobWithS := s + rob(remaining)
+		maxAmt = max([]int{maxAmt,canRobWithS})
+	}
+	return maxAmt
+}
+
+// @lc code=end
