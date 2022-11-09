@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+)
+
 /*
  * @lc app=leetcode id=198 lang=golang
  *
@@ -70,19 +75,38 @@ func max(nums []int) int {
 	return max
 }
 
-func rob(nums []int) int {
+func intSliceToStr(nums []int) string {
+	var sb strings.Builder
+	for _, v := range nums {
+		sb.WriteString(fmt.Sprintf("%d", v))
+	}
+	return sb.String()
+}
 
+func robCached(nums []int, cache map[string]int) int {
 	if len(nums) <= 2 {
 		return max(nums)
 	}
-	maxAmt := 0;
-	for i:=0; i < len(nums) - 1; i++ {
+	maxAmt := 0
+	for i := 0; i < len(nums)-1; i++ {
 		s := nums[i]
 		remaining := nums[i+2:]
-		canRobWithS := s + rob(remaining)
-		maxAmt = max([]int{maxAmt,canRobWithS})
+		remainingKey := intSliceToStr(nums)
+		var canRobWithS int
+		if robCachedVal, ok := cache[remainingKey]; ok {
+			canRobWithS = s + robCachedVal
+		} else {
+			canRobWithS = s + robCached(remaining, cache)
+			cache[remainingKey] = canRobWithS
+		}
+		maxAmt = max([]int{maxAmt, canRobWithS})
 	}
 	return maxAmt
+}
+
+func rob(nums []int) int {
+	cache := make(map[string]int)
+	return robCached(nums, cache)
 }
 
 // @lc code=end
