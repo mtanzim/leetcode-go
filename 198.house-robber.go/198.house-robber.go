@@ -78,7 +78,7 @@ func max(nums []int) int {
 func intSliceToStr(nums []int) string {
 	var sb strings.Builder
 	for _, v := range nums {
-		sb.WriteString(fmt.Sprintf("%d", v))
+		sb.WriteString(fmt.Sprintf("%d|", v))
 	}
 	return sb.String()
 }
@@ -91,16 +91,17 @@ func robCached(nums []int, cache map[string]int) int {
 	for i := 0; i < len(nums)-1; i++ {
 		s := nums[i]
 		remaining := nums[i+2:]
-		remainingKey := intSliceToStr(nums)
+		remainingKey := intSliceToStr(remaining)
 		var canRobWithS int
 		if robCachedVal, ok := cache[remainingKey]; ok {
 			canRobWithS = s + robCachedVal
 		} else {
 			canRobWithS = s + robCached(remaining, cache)
-			cache[remainingKey] = canRobWithS
 		}
 		maxAmt = max([]int{maxAmt, canRobWithS})
 	}
+	key := intSliceToStr(nums)
+	cache[key] = maxAmt
 	return maxAmt
 }
 
