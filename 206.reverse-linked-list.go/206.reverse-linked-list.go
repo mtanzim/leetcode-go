@@ -54,17 +54,17 @@ package main
  *
  */
 
-
- type ListNode struct {
-	Val int
+type ListNode struct {
+	Val  int
 	Next *ListNode
 }
+
 // @lc code=start
 
-func reverseList(head *ListNode) *ListNode {
+func reverseListIterative(head *ListNode) *ListNode {
 
 	temp := []int{}
-	for cur := head; cur != nil ;cur = cur.Next {
+	for cur := head; cur != nil; cur = cur.Next {
 		temp = append(temp, cur.Val)
 	}
 	if len(temp) == 0 {
@@ -73,14 +73,34 @@ func reverseList(head *ListNode) *ListNode {
 	newLL := &ListNode{}
 	newHead := newLL
 	prev := newLL
-	for i:=len(temp)-1; i >= 0; i -- {
+	for i := len(temp) - 1; i >= 0; i-- {
 		newLL.Val = temp[i]
 		newLL.Next = &ListNode{}
 		prev = newLL
 		newLL = newLL.Next
-	} 
+	}
 	prev.Next = nil
 	return newHead
 }
-// @lc code=end
 
+func reverse(head *ListNode) (*ListNode, *ListNode) {
+
+	if head.Next == nil {
+		startNode := &ListNode{Val: head.Val}
+		return startNode, startNode
+	}
+	reversedHead, reversedCurPtr := reverse(head.Next)
+	reversedCurPtr.Next = &ListNode{Val: head.Val}
+	return reversedHead, reversedCurPtr.Next
+}
+
+func reverseList(head *ListNode) *ListNode {
+	if head == nil {
+		return nil
+	}
+	reversed, _ := reverse(head)
+	return reversed
+
+}
+
+// @lc code=end
