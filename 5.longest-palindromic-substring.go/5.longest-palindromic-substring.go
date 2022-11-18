@@ -63,16 +63,18 @@ func longestPalindrome(s string) string {
 		return ""
 	}
 
-	seen := make(map[rune]int)
+	seen := make(map[rune][]int)
 	palindromes := []string{}
 	for i, v := range []rune(s) {
-		if prevLetterIdx, ok := seen[v]; ok {
-			runesToCheck := []rune(s)[prevLetterIdx:i+1]
-			if isPalindrome(string(runesToCheck)) {
-				palindromes = append(palindromes, string(runesToCheck))
+		if prevLetterIndices, ok := seen[v]; ok {
+			for _, position := range prevLetterIndices {
+				runesToCheck := []rune(s)[position : i+1]
+				if isPalindrome(string(runesToCheck)) {
+					palindromes = append(palindromes, string(runesToCheck))
+				}
 			}
 		}
-		seen[v] = i
+		seen[v] = append(seen[v], i)
 	}
 
 	if len(palindromes) == 0 {
