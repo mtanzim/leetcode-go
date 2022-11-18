@@ -47,30 +47,7 @@ import "sort"
  */
 
 // @lc code=start
-func isAnagram(s string, t string) bool {
-	hmS := make(map[rune]int)
-	hmT := make(map[rune]int)
-	for _, v := range s {
-		hmS[v]++
-	}
-	for _, v := range t {
-		hmT[v]++
-	}
-	for _, v := range s {
-		if hmT[v] != hmS[v] {
-			return false
-		}
-	}
-	for _, v := range t {
-		if hmT[v] != hmS[v] {
-			return false
-		}
-	}
-	return true
-}
-
 func groupAnagrams(strs []string) [][]string {
-
 	groups := make(map[string][]string)
 	for _, v := range strs {
 		runes := []rune(v)
