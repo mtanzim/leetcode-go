@@ -22,6 +22,11 @@ func Test_longestPalindrome(t *testing.T) {
 			args: args{"cbbd"},
 			want: "bb",
 		},
+		{
+			name: "fails because I only get the latest instaces of chars",
+			args: args{"ccc"},
+			want: "ccc",
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

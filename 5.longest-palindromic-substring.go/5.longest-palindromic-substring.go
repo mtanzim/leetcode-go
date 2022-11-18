@@ -58,6 +58,11 @@ func isPalindrome(s string) bool {
 }
 
 func longestPalindrome(s string) string {
+
+	if len(s) == 0 {
+		return ""
+	}
+
 	seen := make(map[rune]int)
 	palindromes := []string{}
 	for i, v := range []rune(s) {
@@ -71,7 +76,7 @@ func longestPalindrome(s string) string {
 	}
 
 	if len(palindromes) == 0 {
-		return ""
+		return string(s[0])
 	}
 	longestPalindrome := palindromes[0]
 	for _, v := range palindromes {
