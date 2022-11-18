@@ -2,7 +2,9 @@ package main
 
 import "testing"
 
-func Test_maxSubArray(t *testing.T) {
+// TODO: come back to this
+// func Test_maxSubArray(t *testing.T) {
+func Tes_maxSubArray(t *testing.T) {
 	type args struct {
 		nums []int
 	}
