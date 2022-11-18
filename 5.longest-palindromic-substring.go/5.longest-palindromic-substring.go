@@ -71,6 +71,7 @@ func longestPalindrome(s string) string {
 				runesToCheck := []rune(s)[position : i+1]
 				if isPalindrome(string(runesToCheck)) {
 					palindromes = append(palindromes, string(runesToCheck))
+					break
 				}
 			}
 		}
