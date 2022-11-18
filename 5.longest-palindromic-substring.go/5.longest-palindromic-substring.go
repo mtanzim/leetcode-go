@@ -70,7 +70,17 @@ func longestPalindrome(s string) string {
 		seen[v] = i
 	}
 
-	return palindromes[0]
+	if len(palindromes) == 0 {
+		return ""
+	}
+	longestPalindrome := palindromes[0]
+	for _, v := range palindromes {
+		if len(v) > len(longestPalindrome) {
+			longestPalindrome = v
+		}
+	}
+
+	return longestPalindrome
 }
 
 // @lc code=end
