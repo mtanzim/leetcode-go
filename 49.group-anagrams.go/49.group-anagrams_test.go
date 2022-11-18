@@ -7,7 +7,7 @@ import (
 
 // TODO: these do not pass since array order is not deterministic
 // func Test_groupAnagrams(t *testing.T) {
-func Te_groupAnagrams(t *testing.T) {
+func Tes_groupAnagrams(t *testing.T) {
 	type args struct {
 		strs []string
 	}

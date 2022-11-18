@@ -71,18 +71,12 @@ func isAnagram(s string, t string) bool {
 
 func groupAnagrams(strs []string) [][]string {
 
-	sortedHM := make(map[string]string)
 	groups := make(map[string][]string)
 	for _, v := range strs {
 		runes := []rune(v)
 		sort.Slice(runes, func(i int, j int) bool { return runes[i] < runes[j] })
 		sortedString := string(runes)
-		if _, ok := sortedHM[sortedString]; ok {
-			groups[sortedString] = append(groups[sortedString], v)
-		} else {
-			sortedHM[sortedString] = v
-			groups[sortedString] = append(groups[sortedString], v)
-		}
+		groups[sortedString] = append(groups[sortedString], v)
 	}
 	res := make([][]string, len(groups))
 	idx := 0
