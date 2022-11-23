@@ -49,6 +49,15 @@ func Test_addTwoNumbers(t *testing.T) {
 			},
 			want: &ListNode{7, &ListNode{0, &ListNode{8, nil}}},
 		},
+		{
+			name: "multiple elements, lls are the different sizes",
+			args: args{
+				l1: &ListNode{3, &ListNode{2, &ListNode{1, nil}}},
+				l2: &ListNode{4, nil},
+
+			},
+			want: &ListNode{7, &ListNode{2, &ListNode{1, nil}}},
+		},
 
 
 	}

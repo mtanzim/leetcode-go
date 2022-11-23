@@ -79,6 +79,24 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		l1 = l1.Next
 		l2 = l2.Next
 	}
+	for l1 != nil {
+		curTotal := carryOver + l1.Val
+		carryOver = curTotal / 10
+		sumLL.Val = curTotal % 10
+		sumLL.Next = &ListNode{}
+		prev = sumLL
+		sumLL = sumLL.Next
+		l1 = l1.Next
+	}
+	for l2 != nil {
+		curTotal := carryOver + l2.Val
+		carryOver = curTotal / 10
+		sumLL.Val = curTotal % 10
+		sumLL.Next = &ListNode{}
+		prev = sumLL
+		sumLL = sumLL.Next
+		l2 = l2.Next
+	}
 	if carryOver > 0 {
 		sumLL.Val = carryOver
 		sumLL.Next = &ListNode{}
