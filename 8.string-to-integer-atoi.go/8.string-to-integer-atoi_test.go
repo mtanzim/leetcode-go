@@ -62,6 +62,11 @@ func Test_myAtoi(t *testing.T) {
 			args: args{"21474836460"},
 			want: 2147483647,
 		},
+		{
+			name: "failing on leetocde: oh man this is annoying",
+			args: args{"   +0 123"},
+			want: 0,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

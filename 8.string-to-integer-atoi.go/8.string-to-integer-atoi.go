@@ -124,7 +124,7 @@ func myAtoi(s string) int {
 	bypassedLeadingZeroes := false
 	numbersRunes := []rune{}
 	for _, c := range runes {
-		if c == ' ' {
+		if !started && c == ' ' {
 			continue
 		}
 		if !started && c == '-' {
