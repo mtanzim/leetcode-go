@@ -73,27 +73,12 @@ type coord struct {
 
 func floodFill(image [][]int, sr int, sc int, color int) [][]int {
 
-	var dfs func(v coord)
-	length := len(image)
+	height := len(image)
 	width := len(image[0])
 
 	source := coord{sc, sr}
 	marked := make(map[coord]bool)
-	dfs(source)
-
-	transformed := make([][]int, length)
-	for y := range image {
-		transformed[y] = make([]int, width)
-		for x := range image[y] {
-			if marked[coord{x, y}] {
-				transformed[y][x] = color
-			} else {
-				transformed[y][x] = image[y][x]
-
-			}
-		}
-	}
-
+	var dfs func(v coord)
 	dfs = func(v coord) {
 		marked[v] = true
 		neighbors := []coord{}
@@ -108,7 +93,7 @@ func floodFill(image [][]int, sr int, sc int, color int) [][]int {
 			}
 		}
 		for _, c := range []coord{top, bottom} {
-			if c.y > -1 && c.y < length && image[c.y][c.x] == image[v.y][v.x] && !marked[c] {
+			if c.y > -1 && c.y < height && image[c.y][c.x] == image[v.y][v.x] && !marked[c] {
 				neighbors = append(neighbors, c)
 			}
 		}
@@ -117,6 +102,21 @@ func floodFill(image [][]int, sr int, sc int, color int) [][]int {
 			dfs(c)
 		}
 
+	}
+
+	dfs(source)
+
+	transformed := make([][]int, height)
+	for y := range image {
+		transformed[y] = make([]int, width)
+		for x := range image[y] {
+			if marked[coord{x, y}] {
+				transformed[y][x] = color
+			} else {
+				transformed[y][x] = image[y][x]
+
+			}
+		}
 	}
 
 	return transformed
