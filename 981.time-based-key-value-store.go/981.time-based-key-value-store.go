@@ -100,7 +100,14 @@ func (this *TimeMap) Get(key string, timestamp int) string {
 		sortedTimestamps = append(sortedTimestamps, k)
 	}
 	sort.Ints(sortedTimestamps)
+	first := sortedTimestamps[0]
+	if timestamp < first {
+		return ""
+	}
 	idx := binarySearch(sortedTimestamps, 0, len(sortedTimestamps)-1, timestamp)
+	if idx == -1 {
+		return ""
+	}
 	ts := sortedTimestamps[idx]
 	return allValues[ts]
 
@@ -108,18 +115,20 @@ func (this *TimeMap) Get(key string, timestamp int) string {
 
 func binarySearch(vs []int, l, r, v int) int {
 	if r >= l {
-		return r
-	}
-	mid := l + (r-l)/2
-	if v == vs[mid] {
-		return mid
+
+		mid := l + (r-l)/2
+		if v == vs[mid] {
+			return mid
+		}
+
+		if vs[mid] > v {
+			return binarySearch(vs, l, mid-1, v)
+		}
+
+		return binarySearch(vs, mid+1, r, v)
 	}
 
-	if vs[mid] > v {
-		return binarySearch(vs, l, mid-1, v)
-	}
-
-	return binarySearch(vs, mid+1, r, v)
+	return r
 }
 
 /**
