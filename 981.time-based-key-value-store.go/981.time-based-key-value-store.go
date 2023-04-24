@@ -74,20 +74,34 @@ import "sort"
 
 // @lc code=start
 
+type values struct {
+	vm       map[int]string
+	sortedTs []int
+}
+
 type TimeMap struct {
-	values map[string](map[int]string)
+	values map[string]values
 }
 
 func Constructor() TimeMap {
-	return TimeMap{values: make(map[string](map[int]string))}
+	return TimeMap{make(map[string]values)}
 }
 
 func (this *TimeMap) Set(key string, value string, timestamp int) {
-	_, ok := this.values[key]
+	entry, ok := this.values[key]
 	if !ok {
-		this.values[key] = make(map[int]string)
+		entry = values{
+			vm:       make(map[int]string),
+			sortedTs: []int{},
+		}
 	}
-	this.values[key][timestamp] = value
+	entry.vm[timestamp] = value
+	prevTs := entry.sortedTs
+	newTs := append(prevTs, timestamp)
+	sort.Ints(newTs)
+	entry.sortedTs = newTs
+	this.values[key] = entry
+
 }
 
 func (this *TimeMap) Get(key string, timestamp int) string {
@@ -95,21 +109,17 @@ func (this *TimeMap) Get(key string, timestamp int) string {
 	if !ok {
 		return ""
 	}
-	sortedTimestamps := []int{}
-	for k := range allValues {
-		sortedTimestamps = append(sortedTimestamps, k)
-	}
-	sort.Ints(sortedTimestamps)
-	first := sortedTimestamps[0]
+	timestamps := allValues.sortedTs
+	first := timestamps[0]
 	if timestamp < first {
 		return ""
 	}
-	idx := binarySearch(sortedTimestamps, 0, len(sortedTimestamps)-1, timestamp)
+	idx := binarySearch(timestamps, 0, len(timestamps)-1, timestamp)
 	if idx == -1 {
 		return ""
 	}
-	ts := sortedTimestamps[idx]
-	return allValues[ts]
+	ts := timestamps[idx]
+	return allValues.vm[ts]
 
 }
 
