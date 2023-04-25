@@ -82,12 +82,12 @@ func (this *LinkedList) AddToHead(val int) *LinkedList {
 	temp := this
 	this = &LinkedList{Data: val}
 	this.next = temp
-  return this
+	return this
 }
 
 func (this *LinkedList) RemoveHead() *LinkedList {
-  this = this.next
-  return this
+	this = this.next
+	return this
 }
 
 type MinStack struct {
@@ -104,8 +104,8 @@ func (this *MinStack) isEmpty() bool {
 }
 
 func (this *MinStack) Push(val int) {
-  this.ll = this.ll.AddToHead(val)
-	if val <= this.min.Data{
+	this.ll = this.ll.AddToHead(val)
+	if val <= this.min.Data {
 		this.min = this.min.AddToHead(val)
 	}
 }
@@ -114,10 +114,10 @@ func (this *MinStack) Pop() {
 	if this.isEmpty() {
 		return
 	}
-  v := this.Top()
-  if v == this.GetMin() {
-    this.min = this.min.RemoveHead()
-  }
+	v := this.Top()
+	if v == this.GetMin() {
+		this.min = this.min.RemoveHead()
+	}
 	this.ll = this.ll.RemoveHead()
 }
 
@@ -129,9 +129,9 @@ func (this *MinStack) Top() int {
 }
 
 func (this *MinStack) GetMin() int {
-  if this.isEmpty() {
-    return 0
-  }
+	if this.isEmpty() {
+		return 0
+	}
 	return this.min.Data
 }
 

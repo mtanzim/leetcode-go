@@ -62,7 +62,7 @@ func maxProfit(prices []int) int {
 		return maxProfit
 	}
 	bought := prices[0]
-	for i:=1; i < len(prices); i++ {
+	for i := 1; i < len(prices); i++ {
 		if prices[i] < bought {
 			bought = prices[i]
 			continue
@@ -71,9 +71,9 @@ func maxProfit(prices []int) int {
 		if profitNow > maxProfit {
 			maxProfit = profitNow
 		}
-	}	
+	}
 
 	return maxProfit
 }
-// @lc code=end
 
+// @lc code=end

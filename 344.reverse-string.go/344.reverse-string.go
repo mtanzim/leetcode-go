@@ -45,8 +45,8 @@ func reverseString(s []byte) {
 	back := len(s) - 1
 	for front < back {
 		s[back], s[front] = s[front], s[back]
-		front ++
-		back --
+		front++
+		back--
 	}
 }
 

@@ -122,7 +122,7 @@ func maxAreaOfIsland(grid [][]int) int {
 	}
 
 	maxIslands := 0
-	for _, ic := range islandCounts  {
+	for _, ic := range islandCounts {
 		if ic > maxIslands {
 			maxIslands = ic
 		}

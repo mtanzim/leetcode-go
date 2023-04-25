@@ -162,8 +162,8 @@ func myAtoi(s string) int {
 	numbersStr := string(numbersRunes)
 	number, _ := strconv.Atoi(numbersStr)
 	rv := number * multiplier
-	upperBound := int(math.Pow(2,31)) -1
-	lowerBound := int(math.Pow(-2,31))
+	upperBound := int(math.Pow(2, 31)) - 1
+	lowerBound := int(math.Pow(-2, 31))
 	if rv > upperBound {
 		return upperBound
 	}

@@ -20,7 +20,7 @@ func Test_merge(t *testing.T) {
 		{
 			name: "basic testing",
 			args: args{
-				nums1: []int{1,2,3,0,0,0},
+				nums1: []int{1, 2, 3, 0, 0, 0},
 				m:     3,
 				nums2: []int{2, 5, 6},
 				n:     3,

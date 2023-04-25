@@ -16,7 +16,6 @@ func Test_isValid(t *testing.T) {
 			name: "basic",
 			args: args{
 				s: "()",
-
 			},
 			want: true,
 		},
@@ -24,7 +23,6 @@ func Test_isValid(t *testing.T) {
 			name: "basic false",
 			args: args{
 				s: "(]",
-
 			},
 			want: false,
 		},
@@ -32,7 +30,6 @@ func Test_isValid(t *testing.T) {
 			name: "nested",
 			args: args{
 				s: "(([]))",
-
 			},
 			want: true,
 		},

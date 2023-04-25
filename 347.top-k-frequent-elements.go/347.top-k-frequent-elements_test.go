@@ -19,16 +19,16 @@ func Test_topKFrequent(t *testing.T) {
 		{
 			name: "basic",
 			args: args{
-				nums: []int{1,1,1,2,2,3},
-				k: 2,
+				nums: []int{1, 1, 1, 2, 2, 3},
+				k:    2,
 			},
-			want: []int{1,2},
+			want: []int{1, 2},
 		},
 		{
 			name: "single elem",
 			args: args{
 				nums: []int{1},
-				k: 1,
+				k:    1,
 			},
 			want: []int{1},
 		},

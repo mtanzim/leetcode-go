@@ -14,16 +14,16 @@ func Test_isPalindrome(t *testing.T) {
 		{
 			name: "simple negative",
 			args: args{
-				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3} }},
+				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3}}},
 			},
-			want:  false,
+			want: false,
 		},
 		{
 			name: "simple positive",
 			args: args{
-				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 1} }},
+				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 1}}},
 			},
-			want:  true,
+			want: true,
 		},
 	}
 	for _, tt := range tests {

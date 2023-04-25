@@ -54,8 +54,8 @@ func productExceptSelf(nums []int) []int {
 	for i := range nums {
 		left := nums[:i]
 		right := nums[i+1:]
-		rest := append([]int{},left...)
-		rest = append(rest,right...)
+		rest := append([]int{}, left...)
+		rest = append(rest, right...)
 		productHM[i] = rest
 	}
 	sumArray := make([]int, len(nums))

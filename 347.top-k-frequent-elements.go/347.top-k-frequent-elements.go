@@ -63,7 +63,7 @@ func topKFrequent(nums []int, k int) []int {
 	}
 	sort.Slice(cs, func(i, j int) bool { return cs[i].n > cs[j].n })
 
-	r := make([]int,k)
+	r := make([]int, k)
 
 	for i := range r {
 		r[i] = cs[i].v

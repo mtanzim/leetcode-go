@@ -18,26 +18,26 @@ func Test_twoSum(t *testing.T) {
 		{
 			name: "basic",
 			args: args{
-				numbers: []int{2,7,11,15},
-				target: 9,
+				numbers: []int{2, 7, 11, 15},
+				target:  9,
 			},
-			want: []int{1,2},
+			want: []int{1, 2},
 		},
 		{
 			name: "basic 2",
 			args: args{
-				numbers: []int{2,3,4},
-				target: 6,
+				numbers: []int{2, 3, 4},
+				target:  6,
 			},
-			want: []int{1,3},
+			want: []int{1, 3},
 		},
 		{
 			name: "basic 3",
 			args: args{
-				numbers: []int{-1,0},
-				target: -1,
+				numbers: []int{-1, 0},
+				target:  -1,
 			},
-			want: []int{1,2},
+			want: []int{1, 2},
 		},
 	}
 	for _, tt := range tests {

@@ -20,12 +20,12 @@ func Test_floodFill(t *testing.T) {
 		{
 			name: "given test case",
 			args: args{
-				image: [][]int{[]int{1,1,1}, []int{1,1,0},[]int{1,0,1}},
-				sr: 1,
-				sc: 1,
+				image: [][]int{[]int{1, 1, 1}, []int{1, 1, 0}, []int{1, 0, 1}},
+				sr:    1,
+				sc:    1,
 				color: 2,
 			},
-			want: [][]int{[]int{2,2,2}, []int{2,2,0},[]int{2,0,1}},
+			want: [][]int{[]int{2, 2, 2}, []int{2, 2, 0}, []int{2, 0, 1}},
 		},
 	}
 	for _, tt := range tests {

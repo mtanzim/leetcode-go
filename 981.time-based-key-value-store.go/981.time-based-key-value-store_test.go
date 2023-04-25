@@ -17,10 +17,9 @@ func TestTimeMap_Set(t *testing.T) {
 		tm.Get("love", 20),
 		tm.Get("love", 25),
 	}
-	expected := []string{"","high","high","low","low"}
-	if !reflect.DeepEqual(expected,got ) {
+	expected := []string{"", "high", "high", "low", "low"}
+	if !reflect.DeepEqual(expected, got) {
 		t.Errorf("failed, got: %v, wanted: %v", got, expected)
 	}
-
 
 }

@@ -79,7 +79,7 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 
 	sortedIdx := 0
 	left, right := 0, 0
-	nums1Copy := make([]int,m)
+	nums1Copy := make([]int, m)
 	for i := 0; i < m; i++ {
 		nums1Copy[i] = nums1[i]
 	}

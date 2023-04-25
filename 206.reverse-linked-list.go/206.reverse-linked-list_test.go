@@ -18,9 +18,9 @@ func Test_reverseList(t *testing.T) {
 		{
 			name: "simple",
 			args: args{
-				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3} }},
+				head: &ListNode{Val: 1, Next: &ListNode{Val: 2, Next: &ListNode{Val: 3}}},
 			},
-			want:  &ListNode{Val: 3, Next: &ListNode{Val: 2, Next: &ListNode{Val: 1} }},
+			want: &ListNode{Val: 3, Next: &ListNode{Val: 2, Next: &ListNode{Val: 1}}},
 		},
 	}
 	for _, tt := range tests {
