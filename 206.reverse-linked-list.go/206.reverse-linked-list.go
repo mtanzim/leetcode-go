@@ -98,7 +98,7 @@ func reverseList(head *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
-	reversed, _ := reverse(head)
+	reversed := reverseListIterative(head)
 	return reversed
 
 }
