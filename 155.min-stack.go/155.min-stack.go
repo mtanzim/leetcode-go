@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -73,67 +74,79 @@ import (
 
 // @lc code=start
 type LinkedList struct {
-  Data int
-  next *LinkedList
-}
-type MinStack struct {
-    ll *LinkedList
+	Data int
+	next *LinkedList
 }
 
+func (this *LinkedList) AddToHead(val int) *LinkedList {
+	temp := this
+	this = &LinkedList{Data: val}
+	this.next = temp
+  return this
+}
+
+func (this *LinkedList) RemoveHead() *LinkedList {
+  this = this.next
+  return this
+}
+
+type MinStack struct {
+	ll  *LinkedList
+	min *LinkedList
+}
 
 func Constructor() MinStack {
-    return MinStack{}
+	return MinStack{min: &LinkedList{Data: math.MaxInt}}
 }
 
 func (this *MinStack) isEmpty() bool {
-  return this.ll == nil
+	return this.ll == nil
 }
 
-
-func (this *MinStack) Push(val int)  {
-    if this.isEmpty() {
-      this.ll = &LinkedList{Data: val}
-      return 
-    }
-    temp := this.ll
-    this.ll = &LinkedList{Data: val}
-    this.ll.next = temp
+func (this *MinStack) Push(val int) {
+  this.ll = this.ll.AddToHead(val)
+	if val <= this.min.Data{
+		this.min = this.min.AddToHead(val)
+	}
 }
 
-
-func (this *MinStack) Pop()  {
-    if this.isEmpty() {
-      return
-    }
-    this.ll = this.ll.next
+func (this *MinStack) Pop() {
+	if this.isEmpty() {
+		return
+	}
+  v := this.Top()
+  if v == this.GetMin() {
+    this.min = this.min.RemoveHead()
+  }
+	this.ll = this.ll.RemoveHead()
 }
-
 
 func (this *MinStack) Top() int {
+	if this.isEmpty() {
+		return 0
+	}
+	return this.ll.Data
+}
+
+func (this *MinStack) GetMin() int {
   if this.isEmpty() {
     return 0
   }
-  return this.ll.Data
-}
-
-
-func (this *MinStack) GetMin() int {
-    return 500
+	return this.min.Data
 }
 
 func (this *MinStack) String() string {
-  var sb strings.Builder
-  sb.WriteString("head ")
+	var sb strings.Builder
+	sb.WriteString("head ")
 
-  cur := this.ll
-  for cur != nil {
-    sb.WriteString(fmt.Sprintf("-> %d ", cur.Data))
-    cur = cur.next
-  }
-  return sb.String()
+	cur := this.ll
+	for cur != nil {
+		sb.WriteString(fmt.Sprintf("-> %d ", cur.Data))
+		cur = cur.next
+	}
+	return sb.String()
 
 }
-
 
 /**
  * Your MinStack object will be instantiated and called as such:
@@ -144,4 +157,3 @@ func (this *MinStack) String() string {
  * param_4 := obj.GetMin();
  */
 // @lc code=end
-
