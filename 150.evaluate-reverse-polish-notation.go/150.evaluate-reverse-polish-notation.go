@@ -90,13 +90,13 @@ var operators = map[string]Operator{
 		return a + b
 	},
 	"-": func(a, b int) int {
-		return a - b
+		return b - a
 	},
 	"*": func(a, b int) int {
 		return a * b
 	},
 	"/": func(a, b int) int {
-		return a / b
+		return b / a
 	},
 }
 
