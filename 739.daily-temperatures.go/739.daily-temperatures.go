@@ -42,6 +42,7 @@ package main
  */
 
 // @lc code=start
+
 func dailyTemperatures(temperatures []int) []int {
 	result := make([]int, len(temperatures))
 
