@@ -14,7 +14,20 @@ func Test_dailyTemperatures(t *testing.T) {
 		args args
 		want []int
 	}{
-		// TODO: Add test cases.
+		{
+			name: "failing 2",
+			args: args{
+				temperatures: []int{55,38,53,81,61,93,97,32,43,78},
+			},
+			want: []int{3,1,1,2,1,1,0,1,1,0},
+		},
+		{
+			name: "failing 1",
+			args: args{
+				temperatures: []int{89, 62, 70, 58, 47, 47, 46, 76, 100, 70},
+			},
+			want: []int{8, 1, 5, 4, 3, 2, 1, 1, 0, 0},
+		},
 		{
 			name: "basic 1",
 			args: args{

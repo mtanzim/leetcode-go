@@ -42,23 +42,25 @@ package main
  */
 
 // @lc code=start
-
-func traverse(count, initialT int, temperatures []int) int {
-	if len(temperatures) == 0 {
-		return 0
-	}
-	if temperatures[0] > initialT {
-		return count
-	}
-	return traverse(count+1, initialT, temperatures[1:])
-}
-
 func dailyTemperatures(temperatures []int) []int {
-	answer := []int{}
-	for i, v := range temperatures {
-		answer = append(answer, traverse(1,v,temperatures[i+1:]))
+	result := make([]int, len(temperatures))
+
+	for i := len(temperatures) - 1; i >= 0; i-- {
+		j := i + 1
+
+		for j < len(temperatures) && temperatures[j] <= temperatures[i] {
+			if result[j] <= 0 {
+				break
+			}
+			j += result[j]
+		}
+
+		if j < len(temperatures) && temperatures[j] > temperatures[i] {
+			result[i] = j - i
+		}
+
 	}
-	return answer
+	return result
 }
 
 // @lc code=end
