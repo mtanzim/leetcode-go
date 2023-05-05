@@ -79,16 +79,11 @@ func traverse(low, high int, arr []int) (bool, int) {
 		return false, -1
 	}
 	mid := (low + high) / 2
-	if mid == 0 {
-		left := arr[mid]
-		right := arr[mid+1]
-		if left > right {
-			return true, mid+1
-		}
-		return false, -1
-	}
-	if arr[mid] < arr[mid-1] {
+	if mid > 0 && arr[mid] < arr[mid-1] {
 		return true, mid
+	}
+	if mid < len(arr)-1 && arr[mid] > arr[mid+1] {
+		return true, mid + 1
 	}
 	leftOk, leftIdx := traverse(mid+1, high, arr)
 	rightOk, rightIdx := traverse(low, mid-1, arr)
@@ -107,7 +102,7 @@ func findMin(nums []int) int {
 	}
 	ok, idx := traverse(0, len(nums)-1, nums)
 	if !ok {
-		panic("unexpected")
+		return nums[0]
 	}
 	return nums[idx]
 
