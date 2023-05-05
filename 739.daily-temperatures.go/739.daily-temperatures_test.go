@@ -17,9 +17,9 @@ func Test_dailyTemperatures(t *testing.T) {
 		{
 			name: "failing 2",
 			args: args{
-				temperatures: []int{55,38,53,81,61,93,97,32,43,78},
+				temperatures: []int{55, 38, 53, 81, 61, 93, 97, 32, 43, 78},
 			},
-			want: []int{3,1,1,2,1,1,0,1,1,0},
+			want: []int{3, 1, 1, 2, 1, 1, 0, 1, 1, 0},
 		},
 		{
 			name: "failing 1",
