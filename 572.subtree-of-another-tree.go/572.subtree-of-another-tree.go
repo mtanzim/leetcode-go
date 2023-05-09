@@ -61,12 +61,16 @@ func isSameTree(p *TreeNode, q *TreeNode) bool {
 	if p == nil && q == nil {
 		return true
 	}
-	if p == nil || q == nil || p.Val != q.Val {
+	if p == nil {
 		return false
 	}
-
-	return isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
+	if q == nil {
+		return false
+	}
+	curSame := p.Val == q.Val
+	return curSame && isSameTree(p.Left, q.Left) && isSameTree(p.Right, q.Right)
 }
+
 func isSubtree(root *TreeNode, subRoot *TreeNode) bool {
 	if root == nil {
 		return false
