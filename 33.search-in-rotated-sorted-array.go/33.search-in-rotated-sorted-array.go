@@ -80,7 +80,7 @@ func findMinIdx(nums []int) int {
 	}
 
 	if len(nums) == 1 {
-		return nums[0]
+		return 0
 	}
 	ok, idx := traverse(0, len(nums)-1, nums)
 	if !ok {
@@ -114,7 +114,7 @@ func search(nums []int, target int) int {
 	}
 	newIdx := binarySearch(newArr, target, 0, len(nums)-1)
 	if newIdx != -1 {
-		return newIdx + startingIdx
+		return (newIdx + startingIdx) % len(nums)
 	}
 	return -1
 }

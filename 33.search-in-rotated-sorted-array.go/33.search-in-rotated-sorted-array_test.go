@@ -12,11 +12,10 @@ func Test_search(t *testing.T) {
 		args args
 		want int
 	}{
-		// TODO: Add test cases.
 		{
 			name: "1",
 			args: args{
-				nums: []int{4,5,6,7,0,1,2},
+				nums:   []int{4, 5, 6, 7, 0, 1, 2},
 				target: 0,
 			},
 			want: 4,
@@ -24,8 +23,16 @@ func Test_search(t *testing.T) {
 		{
 			name: "1",
 			args: args{
-				nums: []int{1},
+				nums:   []int{1},
 				target: 1,
+			},
+			want: 0,
+		},
+		{
+			name: "1",
+			args: args{
+				nums:   []int{3, 1},
+				target: 3,
 			},
 			want: 0,
 		},
