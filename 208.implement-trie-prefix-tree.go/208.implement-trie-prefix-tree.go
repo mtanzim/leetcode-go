@@ -96,8 +96,8 @@ func insert(node *Node, c rune, word string, d int) *Node {
 		return node
 	}
 	nextC := rune(word[d])
-	node.next[nextC] = insert(node.next[c], nextC, word, d+1)
 	node.val = true
+	node.next[nextC] = insert(node.next[c], nextC, word, d+1)
 	return node
 }
 

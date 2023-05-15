@@ -31,8 +31,8 @@ func TestTrie_Insert(t *testing.T) {
 			fields: fields{
 				parent: Constructor().parent,
 			},
-			args: args{words: []string{"cat", "rat"}},
-			want: []string{"", "c", "ca", "cat", "r", "ra", "rat"},
+			args: args{words: []string{"cat", "rat", "met"}},
+			want: []string{"", "c", "ca", "cat", "m", "me", "met" ,"r", "ra", "rat"},
 		},
 	}
 	for _, tt := range tests {
