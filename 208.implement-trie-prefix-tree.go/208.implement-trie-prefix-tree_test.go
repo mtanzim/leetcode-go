@@ -1,30 +1,38 @@
 package main
 
 import (
-	"fmt"
+	"reflect"
 	"testing"
 )
-
-
 
 func TestTrie_Insert(t *testing.T) {
 	type fields struct {
 		parent *Node
 	}
 	type args struct {
-		word string
+		words []string
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
+		want   []string
 	}{
 		{
 			name: "basic insert",
 			fields: fields{
 				parent: Constructor().parent,
 			},
-			args: args{word: "hello"},
+			args: args{words: []string{"hello"}},
+			want: []string{"", "h", "he", "hel", "hell", "hello"},
+		},
+		{
+			name: "basic insert 2",
+			fields: fields{
+				parent: Constructor().parent,
+			},
+			args: args{words: []string{"cat", "rat"}},
+			want: []string{"", "c", "ca", "cat", "r", "ra", "rat"},
 		},
 	}
 	for _, tt := range tests {
@@ -32,9 +40,13 @@ func TestTrie_Insert(t *testing.T) {
 			this := &Trie{
 				parent: tt.fields.parent,
 			}
-			this.Insert(tt.args.word)
+			for _, word := range tt.args.words {
+				this.Insert(word)
+			}
 			keys := this.Keys()
-			fmt.Println(keys)
+			if !reflect.DeepEqual(tt.want, keys.values) {
+				t.Errorf("wanted: %v, got: %v ", tt.want, keys.values)
+			}
 		})
 	}
 }

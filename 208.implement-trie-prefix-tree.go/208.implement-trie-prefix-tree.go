@@ -85,7 +85,7 @@ func Constructor() Trie {
 }
 
 func (this *Trie) Insert(word string) {
-	this = &Trie{insert(this.parent, rune(word[0]), word, 0)}
+	insert(this.parent, rune(word[0]), word, 0)
 }
 
 func insert(node *Node, c rune, word string, d int) *Node {
@@ -96,7 +96,6 @@ func insert(node *Node, c rune, word string, d int) *Node {
 		return node
 	}
 	nextC := rune(word[d])
-	node.next = make([]*Node, R)
 	node.next[nextC] = insert(node.next[c], nextC, word, d+1)
 	node.val = true
 	return node
