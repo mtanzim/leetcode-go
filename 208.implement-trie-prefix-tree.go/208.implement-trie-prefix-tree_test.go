@@ -50,3 +50,51 @@ func TestTrie_Insert(t *testing.T) {
 		})
 	}
 }
+
+func TestTrie_Search(t *testing.T) {
+	type fields struct {
+		parent *Node
+	}
+	type args struct {
+		words []string
+		searchWord string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   bool
+	}{
+		{
+			name: "basic insert",
+			fields: fields{
+				parent: Constructor().parent,
+			},
+			args: args{words: []string{"hello"}, searchWord: "hello"},
+			want: true,
+		},
+		{
+			name: "basic insert 2",
+			fields: fields{
+				parent: Constructor().parent,
+			},
+			args: args{words: []string{"cat", "rat", "met"}, searchWord: "fat"},
+			want: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			this := &Trie{
+				parent: tt.fields.parent,
+			}
+			for _, word := range tt.args.words {
+				this.Insert(word)
+			}
+			got := this.Search(tt.args.searchWord)
+			if !reflect.DeepEqual(tt.want, got) {
+				t.Errorf("wanted: %v, got: %v ", tt.want, got)
+			}
+		})
+	}
+}
+

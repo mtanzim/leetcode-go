@@ -101,6 +101,21 @@ func insert(node *Node, c rune, word string, d int) *Node {
 	return node
 }
 
+func search(node *Node, word string, d int) bool {
+	if len(word) == d {
+		return true
+	}
+	if node == nil {
+		return false
+	}
+	curRune := rune(word[d])
+	return search(node.next[curRune], word, d+1)
+}
+
+func (this *Trie) Search(word string) bool {
+	return search(this.parent, word, 0)
+}
+
 func (this *Trie) Keys() *stringStack {
 	q := &stringStack{values: []string{}}
 	collect(this.parent, []rune{}, q)
@@ -128,10 +143,6 @@ type stringStack struct {
 func (s *stringStack) push(v string) {
 	s.values = append(s.values, v)
 }
-
-// func (this *Trie) Search(word string) bool {
-
-// }
 
 // func (this *Trie) StartsWith(prefix string) bool {
 
