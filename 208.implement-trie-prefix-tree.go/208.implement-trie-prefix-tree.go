@@ -69,6 +69,7 @@ const R = 128
 
 type Trie struct {
 	parent *Node
+	words  map[string]struct{}
 }
 
 type Node struct {
@@ -76,15 +77,15 @@ type Node struct {
 	val  bool
 }
 
-func Constructor() Trie {
+func Constructor() *Trie {
 	// english alphabet
 	r := R
 	next := make([]*Node, r)
-	return Trie{parent: &Node{next: next}}
-
+	return &Trie{parent: &Node{next: next}, words: make(map[string]struct{})}
 }
 
 func (this *Trie) Insert(word string) {
+	this.words[word] = struct{}{}
 	insert(this.parent, rune(word[0]), word, 0)
 }
 
@@ -102,18 +103,20 @@ func insert(node *Node, c rune, word string, d int) *Node {
 }
 
 func search(node *Node, word string, d int) bool {
-	if len(word) == d {
-		return true
-	}
 	if node == nil {
 		return false
+	}
+	if len(word) == d {
+		return true
 	}
 	curRune := rune(word[d])
 	return search(node.next[curRune], word, d+1)
 }
 
 func (this *Trie) Search(word string) bool {
-	return search(this.parent, word, 0)
+	_, ok := this.words[word]
+	return ok
+	// return search(this.parent, word, 0)
 }
 
 func (this *Trie) Keys() *stringStack {
@@ -144,9 +147,9 @@ func (s *stringStack) push(v string) {
 	s.values = append(s.values, v)
 }
 
-// func (this *Trie) StartsWith(prefix string) bool {
-
-// }
+func (this *Trie) StartsWith(prefix string) bool {
+	return search(this.parent, prefix, 0)
+}
 
 /**
  * Your Trie object will be instantiated and called as such:
