@@ -166,6 +166,22 @@ func TestTrie_StartsWith(t *testing.T) {
 			args: args{words: []string{"cat", "rat", "met"}, prefix: "fat"},
 			want: false,
 		},
+		{
+			name: "no words in trie",
+			fields: fields{
+				parent: Constructor().parent,
+			},
+			args: args{words: []string{}, prefix: "fat"},
+			want: false,
+		},
+		{
+			name: "no words in trie",
+			fields: fields{
+				parent: Constructor().parent,
+			},
+			args: args{words: []string{"fa"}, prefix: "fat"},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

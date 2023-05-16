@@ -69,23 +69,22 @@ const R = 128
 
 type Trie struct {
 	parent *Node
-	words  map[string]struct{}
 }
 
 type Node struct {
 	next []*Node
 	val  bool
+	endOfWord bool
 }
 
-func Constructor() *Trie {
+func Constructor() Trie {
 	// english alphabet
 	r := R
 	next := make([]*Node, r)
-	return &Trie{parent: &Node{next: next}, words: make(map[string]struct{})}
+	return Trie{parent: &Node{next: next}}
 }
 
 func (this *Trie) Insert(word string) {
-	this.words[word] = struct{}{}
 	insert(this.parent, rune(word[0]), word, 0)
 }
 
@@ -94,6 +93,7 @@ func insert(node *Node, c rune, word string, d int) *Node {
 		node = &Node{val: true, next: make([]*Node, R)}
 	}
 	if len(word) == d {
+		node.endOfWord = true
 		return node
 	}
 	nextC := rune(word[d])
@@ -102,21 +102,23 @@ func insert(node *Node, c rune, word string, d int) *Node {
 	return node
 }
 
-func search(node *Node, word string, d int) bool {
+func search(node *Node, word string, d int) (bool, *Node) {
 	if node == nil {
-		return false
+		return false, node
 	}
 	if len(word) == d {
-		return true
+		return true, node
 	}
 	curRune := rune(word[d])
 	return search(node.next[curRune], word, d+1)
 }
 
 func (this *Trie) Search(word string) bool {
-	_, ok := this.words[word]
-	return ok
-	// return search(this.parent, word, 0)
+	found, node := search(this.parent, word, 0)
+	if found {
+		return node.endOfWord
+	}
+	return false
 }
 
 func (this *Trie) Keys() *stringStack {
@@ -148,7 +150,8 @@ func (s *stringStack) push(v string) {
 }
 
 func (this *Trie) StartsWith(prefix string) bool {
-	return search(this.parent, prefix, 0)
+	found, _ := search(this.parent, prefix, 0)
+	return found
 }
 
 /**
