@@ -19,7 +19,7 @@ func Test_subsets(t *testing.T) {
 			args: args{
 				nums: []int{1},
 			},
-			want: [][]int{[]int{},[]int{1}},
+			want: [][]int{[]int{}, []int{1}},
 		},
 	}
 	for _, tt := range tests {
