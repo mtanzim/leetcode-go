@@ -32,7 +32,7 @@ func TestTrie_Insert(t *testing.T) {
 				parent: Constructor().parent,
 			},
 			args: args{words: []string{"cat", "rat", "met"}},
-			want: []string{"", "c", "ca", "cat", "m", "me", "met" ,"r", "ra", "rat"},
+			want: []string{"", "c", "ca", "cat", "m", "me", "met", "r", "ra", "rat"},
 		},
 	}
 	for _, tt := range tests {
@@ -54,7 +54,7 @@ func TestTrie_Search(t *testing.T) {
 		parent *Node
 	}
 	type args struct {
-		words []string
+		words      []string
 		searchWord string
 	}
 	tests := []struct {
@@ -102,14 +102,12 @@ func TestTrie_Search(t *testing.T) {
 	}
 }
 
-
-
 func TestTrie_StartsWith(t *testing.T) {
 	type fields struct {
 		parent *Node
 	}
 	type args struct {
-		words []string
+		words  []string
 		prefix string
 	}
 	tests := []struct {
@@ -196,4 +194,3 @@ func TestTrie_StartsWith(t *testing.T) {
 		})
 	}
 }
-

@@ -72,8 +72,8 @@ type Trie struct {
 }
 
 type Node struct {
-	next []*Node
-	val  bool
+	next      []*Node
+	val       bool
 	endOfWord bool
 }
 
