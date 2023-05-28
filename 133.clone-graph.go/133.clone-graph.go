@@ -112,30 +112,26 @@ type Node struct {
 
 // @lc code=start
 
-func dfs(node *Node, marked map[int]bool) *Node {
-	if node == nil {
-		return node
+func dfs(node *Node, marked map[*Node]*Node) *Node {
+	if _, ok := marked[node]; ok {
+		return marked[node]
 	}
-	marked[node.Val] = true
-	newNeighbors := []*Node{}
+	newNode := &Node{Val: node.Val}
+	marked[node] = newNode
 
-	// fmt.Println(fmt.Sprintf("node: %d", node.Val))
 	for _, n := range node.Neighbors {
 		fmt.Println(fmt.Sprintf("neighbor:%d, from:%d", n.Val, node.Val))
-		if !marked[n.Val] {
-			nn := dfs(n, marked)
-			newNeighbors = append(newNeighbors, nn)
-		}
-	}
-	newNode := &Node{
-		Val:       node.Val,
-		Neighbors: newNeighbors,
+		newNode.Neighbors = append(newNode.Neighbors, dfs(n, marked))
 	}
 	return newNode
 }
 
 func cloneGraph(node *Node) *Node {
-	return dfs(node, make(map[int]bool))
+	if node == nil {
+		return node
+	}
+	visited := make(map[*Node]*Node)
+	return dfs(node, visited)
 }
 
 // @lc code=end
