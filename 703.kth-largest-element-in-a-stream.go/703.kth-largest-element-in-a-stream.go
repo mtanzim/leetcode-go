@@ -137,6 +137,15 @@ func (pq *PQ[T]) swim(k int) {
 	}
 }
 
+
+func (pq *PQ[T]) PeekTop() (*T, error) {
+	if pq.IsEmpty() {
+		return nil, errors.New("pq is empty")
+	}
+	top := pq.keys[1]
+	return top, nil
+}
+
 func (pq *PQ[T]) DelTop() (*T, error) {
 	if pq.IsEmpty() {
 		return nil, errors.New("pq is empty")
@@ -207,13 +216,11 @@ func Constructor(k int, nums []int) KthLargest {
 func (this *KthLargest) Add(val int) int {
 
 	if this.prevMinPQ != nil {
-		prevKth, _ := this.prevMinPQ.DelTop()
-    possibleRes := *prevKth
-    this.prevMinPQ.Insert(possibleRes)
+		prevKth, _ := this.prevMinPQ.PeekTop()
+		possibleRes := *prevKth
 		if val < possibleRes {
-			return *prevKth
+			return possibleRes
 		}
-
 	}
 
 	this.maxPq.Insert(val)
