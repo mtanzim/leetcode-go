@@ -137,7 +137,6 @@ func (pq *PQ[T]) swim(k int) {
 	}
 }
 
-
 func (pq *PQ[T]) PeekTop() (*T, error) {
 	if pq.IsEmpty() {
 		return nil, errors.New("pq is empty")
@@ -190,56 +189,38 @@ func (pq *PQ[T]) String() string {
 }
 
 type KthLargest struct {
-	k         int
-	maxSize   int
-	maxPq     *PQ[int]
-	prevMinPQ *PQ[int]
-	nums      []int
+	k       int
+	maxSize int
+	minPQ   *PQ[int]
+	nums    []int
 }
 
 func Constructor(k int, nums []int) KthLargest {
-	maxSize := 2*int(math.Pow10(4)) + 1
-	maxPQ := NewMaxPQ[int](maxSize)
+	maxSize := int(math.Pow10(4)) + 1
+	minPQ := NewMinPQ[int](maxSize)
 	for _, v := range nums {
-		maxPQ.Insert(v)
+		minPQ.Insert(v)
+	}
+	for minPQ.Size() > k {
+		minPQ.DelTop()
 	}
 	return KthLargest{
-		k:         k,
-		maxSize:   maxSize,
-		maxPq:     maxPQ,
-		nums:      nums,
-		prevMinPQ: nil,
+		k:       k,
+		maxSize: maxSize,
+		minPQ:   minPQ,
+		nums:    nums,
 	}
 
 }
 
 func (this *KthLargest) Add(val int) int {
 
-	if this.prevMinPQ != nil {
-		prevKth, _ := this.prevMinPQ.PeekTop()
-		possibleRes := *prevKth
-		if val < possibleRes {
-			return possibleRes
-		}
+	this.minPQ.Insert(val)
+	for this.minPQ.Size() > this.k {
+		this.minPQ.DelTop()
 	}
-
-	this.maxPq.Insert(val)
-
-	temp := make([]int, this.k)
-	for i := 0; i < this.k; i++ {
-		top, _ := this.maxPq.DelTop()
-		temp[i] = *top
-	}
-	res := temp[this.k-1]
-	for _, v := range temp {
-		this.maxPq.Insert(v)
-	}
-
-	this.prevMinPQ = NewMinPQ[int](this.k)
-	for _, v := range temp {
-		this.prevMinPQ.Insert(v)
-	}
-	return res
+	top, _ := this.minPQ.PeekTop()
+	return *top
 }
 
 /**
