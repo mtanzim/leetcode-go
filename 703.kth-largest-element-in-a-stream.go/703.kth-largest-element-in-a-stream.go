@@ -181,10 +181,11 @@ func (pq *PQ[T]) String() string {
 }
 
 type KthLargest struct {
-	k       int
-	maxSize int
-	maxPq   PQ[int]
-	nums    []int
+	k         int
+	maxSize   int
+	maxPq     *PQ[int]
+	prevMinPQ *PQ[int]
+	nums      []int
 }
 
 func Constructor(k int, nums []int) KthLargest {
@@ -194,16 +195,29 @@ func Constructor(k int, nums []int) KthLargest {
 		maxPQ.Insert(v)
 	}
 	return KthLargest{
-		k:       k,
-		maxSize: maxSize,
-		maxPq:   *maxPQ,
-		nums:    nums,
+		k:         k,
+		maxSize:   maxSize,
+		maxPq:     maxPQ,
+		nums:      nums,
+		prevMinPQ: nil,
 	}
 
 }
 
 func (this *KthLargest) Add(val int) int {
+
+	if this.prevMinPQ != nil {
+		prevKth, _ := this.prevMinPQ.DelTop()
+    possibleRes := *prevKth
+    this.prevMinPQ.Insert(possibleRes)
+		if val < possibleRes {
+			return *prevKth
+		}
+
+	}
+
 	this.maxPq.Insert(val)
+
 	temp := make([]int, this.k)
 	for i := 0; i < this.k; i++ {
 		top, _ := this.maxPq.DelTop()
@@ -212,6 +226,11 @@ func (this *KthLargest) Add(val int) int {
 	res := temp[this.k-1]
 	for _, v := range temp {
 		this.maxPq.Insert(v)
+	}
+
+	this.prevMinPQ = NewMinPQ[int](this.k)
+	for _, v := range temp {
+		this.prevMinPQ.Insert(v)
 	}
 	return res
 }
