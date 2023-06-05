@@ -58,7 +58,7 @@ func merge(intervals [][]int) [][]int {
 	// sortedIntervals := copy([][]int{}, intervals)
 
 	sort.SliceStable(intervals, func(i, j int) bool {
-		return intervals[i][0] < intervals[i][0]
+		return intervals[i][0] < intervals[j][0]
 	})
 
 	i := 1
@@ -66,11 +66,16 @@ func merge(intervals [][]int) [][]int {
 	for i < len(intervals) {
 		firstEnd, secondStart := intervals[i-1][1], intervals[i][0]
 		firstStart, secondEnd := intervals[i-1][0], intervals[i][1]
-		if firstEnd >= secondStart {
-			intervals[i-1] = []int{firstStart, secondEnd}
-			intervals[i] = []int{}
-			i += 2
-			continue
+		if secondStart <= firstEnd {
+			minStart, maxEnd := firstStart, secondEnd
+			if secondStart < firstStart {
+				minStart = secondStart
+			}
+			if firstEnd > secondEnd {
+				maxEnd = firstEnd
+			}
+			intervals[i] = []int{minStart, maxEnd}
+			intervals[i-1] = []int{}
 		}
 		i += 1
 	}

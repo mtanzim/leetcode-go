@@ -28,6 +28,20 @@ func Test_merge(t *testing.T) {
 			},
 			want: [][]int{[]int{0, 4}},
 		},
+		{
+			name: "given edge case 2",
+			args: args{
+				intervals: [][]int{[]int{1, 4}, []int{0, 0}},
+			},
+			want: [][]int{[]int{0, 0}, []int{1, 4}},
+		},
+		{
+			name: "given edge case 3",
+			args: args{
+				intervals: [][]int{[]int{1, 4}, []int{0, 2}, []int{3, 5}},
+			},
+			want: [][]int{[]int{0, 5}},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
