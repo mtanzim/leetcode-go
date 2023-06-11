@@ -52,6 +52,7 @@ package main
 
 // @lc code=start
 
+// TODO: can do this in O(n^2) using a cache
 func traverse(nums []int, pos, target int) bool {
 	if pos == target {
 		return true
@@ -70,9 +71,21 @@ func traverse(nums []int, pos, target int) bool {
 	return canJump
 }
 
-func canJump(nums []int) bool {
+func canJumpBacktrack(nums []int) bool {
 	target := len(nums) - 1
 	return traverse(nums, 0, target)
+}
+
+// argh this one is tricky af
+// https://youtu.be/Yan0cv2cLy8
+func canJump(nums []int) bool {
+	target := len(nums) - 1
+	for i := target; i >= 0; i-- {
+		if nums[i]+i >= target {
+			target = i
+		}
+	}
+	return target == 0
 }
 
 // @lc code=end
