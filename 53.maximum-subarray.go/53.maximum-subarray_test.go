@@ -4,7 +4,7 @@ import "testing"
 
 // TODO: come back to this
 // func Test_maxSubArray(t *testing.T) {
-func Tes_maxSubArray(t *testing.T) {
+func Test_maxSubArray(t *testing.T) {
 	type args struct {
 		nums []int
 	}

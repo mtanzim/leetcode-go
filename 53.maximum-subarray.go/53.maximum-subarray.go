@@ -57,37 +57,18 @@ package main
 
 // @lc code=start
 func maxSubArray(nums []int) int {
-	if len(nums) == 1 {
-		return nums[0]
-	}
-	if len(nums) == 2 {
-		a, b := nums[0], nums[1]
-		if a+b > a && a+b > b {
-			return a + b
+	maxSub := nums[0]
+	curSum := 0
+	for _, v := range nums {
+		if curSum < 0 {
+			curSum = 0
 		}
-		if a > b {
-			return a
-		}
-		return b
-
-	}
-
-	maxSum := 0
-	for i := 0; i < len(nums); i++ {
-		cur := nums[i]
-		rest := append([]int{}, nums[0:i]...)
-		rest = append(rest, nums[i+1:]...)
-		restSum := maxSubArray(rest)
-		if cur+restSum > cur && cur+restSum > restSum && cur+restSum > maxSum {
-			maxSum = cur + restSum
-		} else if cur > restSum && cur > maxSum {
-			maxSum = cur
-		} else if restSum > maxSum {
-			maxSum = restSum
+		curSum += v
+		if curSum > maxSub {
+			maxSub = curSum
 		}
 	}
-
-	return maxSum
+	return maxSub
 
 }
 
