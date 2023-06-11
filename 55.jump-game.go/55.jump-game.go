@@ -62,7 +62,7 @@ func traverse(nums []int, pos, target int) bool {
 	curJump := nums[pos]
 	canJump := false
 	for i := 1; i <= curJump; i++ {
-		canJump = canJump || pos == target || traverse(nums, pos+i, target)
+		canJump = canJump || traverse(nums, pos+i, target)
 	}
 	return canJump
 }
