@@ -30,14 +30,14 @@ func Test_canJump(t *testing.T) {
 		{
 			name: "failing",
 			args: args{
-				nums: []int{2,0,0},
+				nums: []int{2, 0, 0},
 			},
 			want: true,
 		},
 		{
 			name: "failing 2",
 			args: args{
-				nums: []int{2,0},
+				nums: []int{2, 0},
 			},
 			want: true,
 		},
