@@ -21,11 +21,25 @@ func Test_canJump(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "base",
+			name: "base 2",
 			args: args{
-				nums: []int{3, 1, 0, 4},
+				nums: []int{3, 2, 1, 0, 4},
 			},
 			want: false,
+		},
+		{
+			name: "failing",
+			args: args{
+				nums: []int{2,0,0},
+			},
+			want: true,
+		},
+		{
+			name: "failing 2",
+			args: args{
+				nums: []int{2,0},
+			},
+			want: true,
 		},
 	}
 	for _, tt := range tests {
