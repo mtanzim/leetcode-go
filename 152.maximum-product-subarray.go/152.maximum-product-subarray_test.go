@@ -35,13 +35,13 @@ func Test_subarrays(t *testing.T) {
 			},
 			want: [][]int{{1}, {1, 2}, {2}},
 		},
-		{
-			name: "base - triple",
-			args: args{
-				[]int{-2, 3, -4},
-			},
-			want: [][]int{{1}, {1, 2}, {2}},
-		},
+		// {
+		// 	name: "base - triple",
+		// 	args: args{
+		// 		[]int{-2, 3, -4},
+		// 	},
+		// 	want: [][]int{{1}, {1, 2}, {2}},
+		// },
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -67,6 +67,13 @@ func Test_maxProduct(t *testing.T) {
 				nums: []int{-2,3,-4},
 			},
 			want: 24,
+		},
+		{
+			name: "failing",
+			args: args{
+				nums: []int{-2,0,-1},
+			},
+			want: 0,
 		},
 	}
 	for _, tt := range tests {

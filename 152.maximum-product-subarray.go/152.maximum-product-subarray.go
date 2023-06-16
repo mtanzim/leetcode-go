@@ -82,6 +82,9 @@ func maxProduct(nums []int) int {
 	arrs := subarrays(nums)
 	maxProd := math.Inf(-1)
 	for _, arr := range arrs {
+		if len(arr) == 0 {
+			continue
+		}
 		prod := 1.0
 		for _, v := range arr {
 			prod *= float64(v) 
