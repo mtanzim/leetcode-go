@@ -65,6 +65,7 @@ func subarrays(nums []int) [][]int {
 	}
 
 	overallRes := [][]int{}
+	overallRes = append(overallRes, nums)
 	for i, v := range nums {
 		left := subarrays(nums[:i])
 		right := subarrays(nums[i+1:])
