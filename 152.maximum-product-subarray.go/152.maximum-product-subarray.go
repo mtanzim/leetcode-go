@@ -78,6 +78,7 @@ func subarrays(nums []int) [][]int {
 
 }
 
+// TODO: works but needs DP
 func maxProduct(nums []int) int {
 	arrs := subarrays(nums)
 	maxProd := math.Inf(-1)
