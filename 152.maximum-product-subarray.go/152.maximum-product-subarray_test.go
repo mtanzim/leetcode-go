@@ -19,7 +19,7 @@ func Test_subarrays(t *testing.T) {
 			args: args{
 				[]int{},
 			},
-			want: [][]int{},
+			want: [][]int{{}},
 		},
 		{
 			name: "base - single",
