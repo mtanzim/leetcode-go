@@ -57,7 +57,8 @@ import (
 
 // @lc code=start
 
-func subarrays(nums []int) int {
+// TODO: works but needs DP
+func maxProduct(nums []int) int {
 	if len(nums) == 0 {
 		return int(math.Inf(-1))
 	}
@@ -82,42 +83,21 @@ func subarrays(nums []int) int {
 		maxProd = curProd
 	}
 	for i, v := range nums {
-		left := subarrays(nums[:i])
+		left := maxProduct(nums[:i])
 		if left > int(maxProd) {
 			maxProd = left
 		}
-		right := subarrays(nums[i+1:])
+		right := maxProduct(nums[i+1:])
 		if right > int(maxProd) {
 			maxProd = right
 		}
-		me := subarrays([]int{v})
+		me := maxProduct([]int{v})
 		if me > int(maxProd) {
 			maxProd = me
 		}
 
 	}
 	return maxProd
-
-}
-
-// TODO: works but needs DP
-func maxProduct(nums []int) int {
-	return subarrays(nums)
-	// arrs := subarrays(nums)
-	// maxProd := math.Inf(-1)
-	// for _, arr := range arrs {
-	// 	if len(arr) == 0 {
-	// 		continue
-	// 	}
-	// 	prod := 1.0
-	// 	for _, v := range arr {
-	// 		prod *= float64(v)
-	// 	}
-	// 	if prod > maxProd {
-	// 		maxProd = float64(prod)
-	// 	}
-	// }
-	// return int(maxProd)
 }
 
 // @lc code=end
