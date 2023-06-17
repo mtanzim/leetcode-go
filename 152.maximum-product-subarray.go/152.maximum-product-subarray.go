@@ -1,6 +1,9 @@
 package main
 
-import "math"
+import (
+	"math"
+	"sort"
+)
 
 /*
  * @lc app=leetcode id=152 lang=golang
@@ -54,47 +57,67 @@ import "math"
 
 // @lc code=start
 
-func subarrays(nums []int) [][]int {
+func subarrays(nums []int) int {
+	if len(nums) == 0 {
+		return int(math.Inf(-1))
+	}
 	if len(nums) == 1 {
-		return [][]int{nums}
+		return nums[0]
 	}
 	if len(nums) == 2 {
-		left := []int{nums[0]}
-		right := []int{nums[1]}
-		return [][]int{left, nums, right}
+		left := nums[0]
+		right := nums[1]
+		both := left * right
+		all := []int{left, right, both}
+		sort.Ints(all)
+		return all[len(all)-1]
 	}
 
-	overallRes := [][]int{}
-	overallRes = append(overallRes, nums)
+	maxProd := int(math.Inf(-1))
+	curProd := 1
+	for _, v := range nums {
+		curProd *= v
+	}
+	if curProd > maxProd {
+		maxProd = curProd
+	}
 	for i, v := range nums {
 		left := subarrays(nums[:i])
+		if left > int(maxProd) {
+			maxProd = left
+		}
 		right := subarrays(nums[i+1:])
+		if right > int(maxProd) {
+			maxProd = right
+		}
 		me := subarrays([]int{v})
-		overallRes = append(overallRes, left...)
-		overallRes = append(overallRes, right...)
-		overallRes = append(overallRes, me...)
+		if me > int(maxProd) {
+			maxProd = me
+		}
+
 	}
-	return overallRes
+	return maxProd
 
 }
 
 // TODO: works but needs DP
 func maxProduct(nums []int) int {
-	arrs := subarrays(nums)
-	maxProd := math.Inf(-1)
-	for _, arr := range arrs {
-		if len(arr) == 0 {
-			continue
-		}
-		prod := 1.0
-		for _, v := range arr {
-			prod *= float64(v) 
-		}
-		if prod > maxProd {
-			maxProd = float64(prod)
-		}
-	}
-	return int(maxProd)
+	return subarrays(nums)
+	// arrs := subarrays(nums)
+	// maxProd := math.Inf(-1)
+	// for _, arr := range arrs {
+	// 	if len(arr) == 0 {
+	// 		continue
+	// 	}
+	// 	prod := 1.0
+	// 	for _, v := range arr {
+	// 		prod *= float64(v)
+	// 	}
+	// 	if prod > maxProd {
+	// 		maxProd = float64(prod)
+	// 	}
+	// }
+	// return int(maxProd)
 }
 
 // @lc code=end
