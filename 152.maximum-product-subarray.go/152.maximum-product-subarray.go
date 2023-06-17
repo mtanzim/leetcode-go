@@ -117,15 +117,15 @@ func traverse(nums numArr, c *cache) int {
 	}
 	for i, v := range nums {
 		left := traverse(nums[:i], c)
-		if left > int(maxProd) {
+		if left > maxProd {
 			maxProd = left
 		}
 		right := traverse(nums[i+1:], c)
-		if right > int(maxProd) {
+		if right > maxProd {
 			maxProd = right
 		}
 		me := traverse([]int{v}, c)
-		if me > int(maxProd) {
+		if me > maxProd {
 			maxProd = me
 		}
 
