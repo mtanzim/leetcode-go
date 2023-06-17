@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"sort"
+	"strings"
 )
 
 /*
@@ -57,13 +59,41 @@ import (
 
 // @lc code=start
 
-// TODO: works but needs DP
-func maxProduct(nums []int) int {
+type cache struct {
+	hm map[string]int
+}
+
+func newCache() *cache {
+	return &cache{make(map[string]int)}
+}
+
+type numArr []int
+
+func (a numArr) String() string {
+	var sb strings.Builder
+	for _, v := range a {
+		sb.WriteString(fmt.Sprintf("%d|", v))
+	}
+	return sb.String()
+}
+
+func traverse(nums numArr, c *cache) int {
+
+	key := nums.String()
+	if v, ok := c.hm[key]; ok {
+		fmt.Println(fmt.Sprintf("cache hit; key: %s, value: %d ", key, v))
+		return v
+	}
+
 	if len(nums) == 0 {
-		return int(math.Inf(-1))
+		res := int(math.Inf(-1))
+		c.hm[key] = res
+		return res
 	}
 	if len(nums) == 1 {
-		return nums[0]
+		res := nums[0]
+		c.hm[key] = res
+		return res
 	}
 	if len(nums) == 2 {
 		left := nums[0]
@@ -71,7 +101,10 @@ func maxProduct(nums []int) int {
 		both := left * right
 		all := []int{left, right, both}
 		sort.Ints(all)
-		return all[len(all)-1]
+		res := all[len(all)-1]
+		c.hm[key] = res
+		return res
+
 	}
 
 	maxProd := int(math.Inf(-1))
@@ -83,21 +116,27 @@ func maxProduct(nums []int) int {
 		maxProd = curProd
 	}
 	for i, v := range nums {
-		left := maxProduct(nums[:i])
+		left := traverse(nums[:i], c)
 		if left > int(maxProd) {
 			maxProd = left
 		}
-		right := maxProduct(nums[i+1:])
+		right := traverse(nums[i+1:], c)
 		if right > int(maxProd) {
 			maxProd = right
 		}
-		me := maxProduct([]int{v})
+		me := traverse([]int{v}, c)
 		if me > int(maxProd) {
 			maxProd = me
 		}
 
 	}
+	c.hm[key] = maxProd
 	return maxProd
+}
+
+// TODO: works but needs DP
+func maxProduct(nums []int) int {
+	return traverse(numArr(nums), newCache())
 }
 
 // @lc code=end
