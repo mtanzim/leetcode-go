@@ -68,15 +68,12 @@ func newCache() *cache {
 
 func traverse(nums []int, c *cache, start, end int) int {
 
+	if len(nums) == 0 {
+		return int(math.Inf(-1))
+	}
 	key := fmt.Sprintf("%d|%d", start, end)
 	if v, ok := c.hm[key]; ok {
 		return v
-	}
-
-	if len(nums) == 0 {
-		res := int(math.Inf(-1))
-		c.hm[key] = res
-		return res
 	}
 	if len(nums) == 1 {
 		res := nums[0]
@@ -112,9 +109,8 @@ func traverse(nums []int, c *cache, start, end int) int {
 		if right > maxProd {
 			maxProd = right
 		}
-		me := traverse([]int{v}, c, start+i, start+i)
-		if me > maxProd {
-			maxProd = me
+		if v > maxProd {
+			maxProd = v
 		}
 
 	}
