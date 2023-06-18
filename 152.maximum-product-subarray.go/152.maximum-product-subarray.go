@@ -60,10 +60,11 @@ import (
 
 type cache struct {
 	hm map[string]int
+	hmProds map[string]int
 }
 
 func newCache() *cache {
-	return &cache{make(map[string]int)}
+	return &cache{make(map[string]int), make(map[string]int)}
 }
 
 func traverse(nums []int, c *cache, start, end int) int {
@@ -95,12 +96,14 @@ func traverse(nums []int, c *cache, start, end int) int {
 
 	maxProd := int(math.Inf(-1))
 	curProd := 1
-	if cachedPrevProd, ok := c.hm[fmt.Sprintf("%d|%d", start, end-1)]; ok && end < len(nums) {
+	prevKey := fmt.Sprintf("%d|%d", start, end-1)
+	if cachedPrevProd, ok := c.hmProds[prevKey]; ok && end < len(nums) {
 		curProd = cachedPrevProd * nums[end]
 	} else {
 		for _, v := range nums {
 			curProd *= v
 		}
+		c.hmProds[key] = curProd
 	}
 
 	if curProd > maxProd {
