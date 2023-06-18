@@ -50,7 +50,7 @@ import (
  *
  * 1 <= nums.length <= 2 * 10^4
  * -10 <= nums[i] <= 10
- * The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit
+ * The product of any prefix or suffix of nums is guarant eed to fit in a 32-bit
  * integer.
  *
  *
@@ -73,6 +73,7 @@ func traverse(nums []int, c *cache, start, end int) int {
 	}
 	key := fmt.Sprintf("%d|%d", start, end)
 	if v, ok := c.hm[key]; ok {
+		// fmt.Println(fmt.Sprintf("cache hit for key: %s, v: %d", key, v))
 		return v
 	}
 	if len(nums) == 1 {
@@ -94,9 +95,14 @@ func traverse(nums []int, c *cache, start, end int) int {
 
 	maxProd := int(math.Inf(-1))
 	curProd := 1
-	for _, v := range nums {
-		curProd *= v
+	if cachedPrevProd, ok := c.hm[fmt.Sprintf("%d|%d", start, end-1)]; ok && end < len(nums) {
+		curProd = cachedPrevProd * nums[end]
+	} else {
+		for _, v := range nums {
+			curProd *= v
+		}
 	}
+
 	if curProd > maxProd {
 		maxProd = curProd
 	}
