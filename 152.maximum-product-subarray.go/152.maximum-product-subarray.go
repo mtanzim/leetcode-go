@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strings"
 )
 
 /*
@@ -67,21 +66,10 @@ func newCache() *cache {
 	return &cache{make(map[string]int)}
 }
 
-type numArr []int
+func traverse(nums []int, c *cache, start, end int) int {
 
-func (a numArr) String() string {
-	var sb strings.Builder
-	for _, v := range a {
-		sb.WriteString(fmt.Sprintf("%d|", v))
-	}
-	return sb.String()
-}
-
-func traverse(nums numArr, c *cache) int {
-
-	key := nums.String()
+	key := fmt.Sprintf("%d|%d", start, end)
 	if v, ok := c.hm[key]; ok {
-		fmt.Println(fmt.Sprintf("cache hit; key: %s, value: %d ", key, v))
 		return v
 	}
 
@@ -116,15 +104,15 @@ func traverse(nums numArr, c *cache) int {
 		maxProd = curProd
 	}
 	for i, v := range nums {
-		left := traverse(nums[:i], c)
+		left := traverse(nums[:i], c, start, start+i)
 		if left > maxProd {
 			maxProd = left
 		}
-		right := traverse(nums[i+1:], c)
+		right := traverse(nums[i+1:], c, start+i+1, end)
 		if right > maxProd {
 			maxProd = right
 		}
-		me := traverse([]int{v}, c)
+		me := traverse([]int{v}, c, start+i, start+i)
 		if me > maxProd {
 			maxProd = me
 		}
@@ -136,7 +124,7 @@ func traverse(nums numArr, c *cache) int {
 
 // TODO: works but needs DP
 func maxProduct(nums []int) int {
-	return traverse(numArr(nums), newCache())
+	return traverse(nums, newCache(), 0, len(nums)-1)
 }
 
 // @lc code=end

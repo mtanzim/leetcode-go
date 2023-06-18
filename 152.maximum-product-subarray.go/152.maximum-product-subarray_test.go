@@ -41,6 +41,13 @@ func Test_maxProduct(t *testing.T) {
 			},
 			want: 24,
 		},
+		{
+			name: "failing 5",
+			args: args{
+				nums: []int{0,-3,-2,-3,-2,2,-3,0,1,-1},
+			},
+			want: 72,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
