@@ -59,7 +59,7 @@ import (
 // @lc code=start
 
 type cache struct {
-	hm map[string]int
+	hm      map[string]int
 	hmProds map[string]int
 }
 
@@ -127,9 +127,32 @@ func traverse(nums []int, c *cache, start, end int) int {
 	return maxProd
 }
 
-// TODO: works but needs DP
-func maxProduct(nums []int) int {
+// TODO: works but too slow for tests
+func maxProductN2(nums []int) int {
 	return traverse(nums, newCache(), 0, len(nums)-1)
+}
+
+// from neetcode
+func maxProduct(nums []int) int {
+	res, curMin, curMax := nums[0], 1, 1
+
+	for i := 0; i < len(nums); i++ {
+		temp := curMax * nums[i]
+		curMax = max(nums[i]*curMax, nums[i]*curMin, nums[i])
+		curMin = min(temp, nums[i]*curMin, nums[i])
+		res = max(res, curMax)
+	}
+	return res
+}
+
+func max(a ...int) int {
+	sort.Ints(a)
+	return a[len(a) -1]
+}
+
+func min(a ...int) int {
+	sort.Ints(a)
+	return a[0]
 }
 
 // @lc code=end
