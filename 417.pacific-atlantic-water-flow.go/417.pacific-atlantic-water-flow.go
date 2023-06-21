@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /*
  * @lc app=leetcode id=417 lang=golang
@@ -92,16 +94,20 @@ func touchesAtlantic(ri, ci, rLen, cLen int) bool {
 	return ci == cLen || ri == rLen
 }
 
-func dfs(ri int, ci int, heights [][]int, marked map[string]]bool) map[string]]bool {
-	marked[[]int{ri,ci}] = true
+func genKey(ri, ci int) string {
+	return fmt.Sprintf("%d|%d", ri, ci)
+}
+
+func dfs(ri int, ci int, heights [][]int, marked map[string]bool) map[string]bool {
+	marked[genKey(ri, ci)] = true
 	rLen := len(heights)
 	cLen := len(heights[0])
-	neighbors := []int{{ri-1, ci}, {ri+1, ci}, {ri, ci-1}, {ri, ci+1}}
+	neighbors := [][]int{{ri - 1, ci}, {ri + 1, ci}, {ri, ci - 1}, {ri, ci + 1}}
 	for _, neighbor := range neighbors {
-		curRi, curCi := neighbor
-		if !marked[[]int{curRi, curCi}] && curRi >= 0 && curCi >= 0 && curRi < rLen && curCi <= cLen && heights[curRi][curCi] >= heights[ri][ci] {
-			fmt.Println(fmt.Sprintf("curRow %d, curCol %d", curRi, curCi ))
-			dfs(curRi, curCi, heights, marked)
+		nri, nci := neighbor[0], neighbor[1]
+		if !marked[genKey(nri, nci)] && nri >= 0 && nci >= 0 && nri < rLen && nci < cLen && heights[nri][nci] <= heights[ri][ci] {
+			// fmt.Println(fmt.Sprintf("curRow %d, curCol %d", nri, nci))
+			dfs(nri, nci, heights, marked)
 		}
 	}
 	return marked
@@ -109,9 +115,11 @@ func dfs(ri int, ci int, heights [][]int, marked map[string]]bool) map[string]]b
 
 func pacificAtlantic(heights [][]int) [][]int {
 	for ri, row := range heights {
-		for ci, _ := range row {
-			fmt.Println(ri, ci)
-			dfs(ri, ci, heights, make(map[[]int]bool))
+		for ci := range row {
+			markedPath := dfs(ri, ci, heights, make(map[string]bool))
+			fmt.Println(ri, ci, heights[ri][ci])
+			fmt.Println(markedPath)
+			fmt.Println("===")
 		}
 	}
 
