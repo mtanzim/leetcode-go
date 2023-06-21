@@ -136,17 +136,15 @@ func pacificAtlantic(heights [][]int) [][]int {
 	for ri, row := range heights {
 		for ci := range row {
 			markedPath := dfs(ri, ci, heights, make(map[string]bool))
-			// fmt.Println(ri, ci, heights[ri][ci])
-			// fmt.Println(markedPath)
-			// fmt.Println("===")
+
 			cPacific := false
 			cAtlantic := false
-			for key, marked := range markedPath {
+			for key := range markedPath {
 				cri, cci := reverseKey(key)
-				if marked && (touchesAtlantic(cri, cci, rLen, cLen)) {
+				if touchesAtlantic(cri, cci, rLen, cLen) {
 					cAtlantic = cAtlantic || true
 				}
-				if marked && (touchesPacific(cri, cci)) {
+				if touchesPacific(cri, cci) {
 					cPacific = cPacific || true
 				}
 			}
@@ -155,8 +153,12 @@ func pacificAtlantic(heights [][]int) [][]int {
 			}
 		}
 	}
-	fmt.Println(connectedToOceans)
-	return [][]int{}
+	res := [][]int{}
+	for key := range connectedToOceans {
+		ri, ci := reverseKey(key)
+		res = append(res, []int{ri, ci})
+	}
+	return res
 }
 
 // @lc code=end
