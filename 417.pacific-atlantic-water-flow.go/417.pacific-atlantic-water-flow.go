@@ -93,7 +93,7 @@ func touchesPacific(ri, ci int) bool {
 }
 
 func touchesAtlantic(ri, ci, rLen, cLen int) bool {
-	return ci == cLen || ri == rLen
+	return ci == cLen-1 || ri == rLen-1
 }
 
 func genKey(ri, ci int) string {
@@ -136,18 +136,18 @@ func pacificAtlantic(heights [][]int) [][]int {
 	for ri, row := range heights {
 		for ci := range row {
 			markedPath := dfs(ri, ci, heights, make(map[string]bool))
-			fmt.Println(ri, ci, heights[ri][ci])
-			fmt.Println(markedPath)
-			fmt.Println("===")
+			// fmt.Println(ri, ci, heights[ri][ci])
+			// fmt.Println(markedPath)
+			// fmt.Println("===")
 			cPacific := false
 			cAtlantic := false
 			for key, marked := range markedPath {
 				cri, cci := reverseKey(key)
 				if marked && (touchesAtlantic(cri, cci, rLen, cLen)) {
-					cAtlantic = true
+					cAtlantic = cAtlantic || true
 				}
 				if marked && (touchesPacific(cri, cci)) {
-					cPacific = true
+					cPacific = cPacific || true
 				}
 			}
 			if cPacific && cAtlantic {
