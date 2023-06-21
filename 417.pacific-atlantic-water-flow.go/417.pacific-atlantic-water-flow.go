@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 /*
@@ -98,6 +100,19 @@ func genKey(ri, ci int) string {
 	return fmt.Sprintf("%d|%d", ri, ci)
 }
 
+func reverseKey(key string) (int, int) {
+	vals := strings.Split(key, "|")
+	ri, err := strconv.Atoi(vals[0])
+	if err != nil {
+		panic(err)
+	}
+	ci, err := strconv.Atoi(vals[1])
+	if err != nil {
+		panic(err)
+	}
+	return ri, ci
+}
+
 func dfs(ri int, ci int, heights [][]int, marked map[string]bool) map[string]bool {
 	marked[genKey(ri, ci)] = true
 	rLen := len(heights)
@@ -114,15 +129,33 @@ func dfs(ri int, ci int, heights [][]int, marked map[string]bool) map[string]boo
 }
 
 func pacificAtlantic(heights [][]int) [][]int {
+
+	connectedToOceans := make(map[string]bool)
+	rLen := len(heights)
+	cLen := len(heights[0])
 	for ri, row := range heights {
 		for ci := range row {
 			markedPath := dfs(ri, ci, heights, make(map[string]bool))
 			fmt.Println(ri, ci, heights[ri][ci])
 			fmt.Println(markedPath)
 			fmt.Println("===")
+			cPacific := false
+			cAtlantic := false
+			for key, marked := range markedPath {
+				cri, cci := reverseKey(key)
+				if marked && (touchesAtlantic(cri, cci, rLen, cLen)) {
+					cAtlantic = true
+				}
+				if marked && (touchesPacific(cri, cci)) {
+					cPacific = true
+				}
+			}
+			if cPacific && cAtlantic {
+				connectedToOceans[genKey(ri, ci)] = true
+			}
 		}
 	}
-
+	fmt.Println(connectedToOceans)
 	return [][]int{}
 }
 
