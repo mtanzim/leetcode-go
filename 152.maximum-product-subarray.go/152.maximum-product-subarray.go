@@ -147,7 +147,7 @@ func maxProduct(nums []int) int {
 
 func max(a ...int) int {
 	sort.Ints(a)
-	return a[len(a) -1]
+	return a[len(a)-1]
 }
 
 func min(a ...int) int {

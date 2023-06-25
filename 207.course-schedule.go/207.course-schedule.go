@@ -98,7 +98,7 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 		tracker := &cycleTracker{make(map[int]bool)}
 		hasCycle := dfs(adj, make(map[int]bool), tracker, vertex)
 		foundCycle = hasCycle
-		if (foundCycle) {
+		if foundCycle {
 			break
 		}
 		fmt.Printf("vertex %d cycle: %v\n", vertex, hasCycle)

@@ -44,7 +44,7 @@ func Test_maxProduct(t *testing.T) {
 		{
 			name: "failing 5",
 			args: args{
-				nums: []int{0,-3,-2,-3,-2,2,-3,0,1,-1},
+				nums: []int{0, -3, -2, -3, -2, 2, -3, 0, 1, -1},
 			},
 			want: 72,
 		},
