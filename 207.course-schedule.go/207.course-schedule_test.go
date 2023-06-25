@@ -28,6 +28,14 @@ func Test_canFinish(t *testing.T) {
 			},
 			want: false,
 		},
+		{
+			name: "failing 1: has cycle",
+			args: args{
+				numCourses:    3,
+				prerequisites: [][]int{{1, 0}, {2, 0}, {0, 2}},
+			},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

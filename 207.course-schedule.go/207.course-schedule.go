@@ -70,16 +70,17 @@ func dfs(adj Adj, marked map[int]bool, cycleTracker *cycleTracker, v int) bool {
 	marked[v] = true
 	cycleTracker.onStack[v] = true
 	neighbors := adj[v]
+	foundCycle := false
 	for _, neighbor := range neighbors {
 		if !marked[neighbor] {
 			curFoundCycle := cycleTracker.onStack[neighbor]
-			return curFoundCycle || dfs(adj, marked, cycleTracker, neighbor)
+			foundCycle = curFoundCycle || dfs(adj, marked, cycleTracker, neighbor)
 		} else if cycleTracker.onStack[neighbor] {
 			return true
 		}
 	}
 	cycleTracker.onStack[v] = false
-	return false
+	return foundCycle
 }
 
 type cycleTracker struct {
@@ -92,12 +93,17 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 		to, from := prereq[0], prereq[1]
 		adj[from] = append(adj[from], to)
 	}
+	foundCycle := false
 	for vertex := range adj {
 		tracker := &cycleTracker{make(map[int]bool)}
 		hasCycle := dfs(adj, make(map[int]bool), tracker, vertex)
+		foundCycle = hasCycle
+		if (foundCycle) {
+			break
+		}
 		fmt.Printf("vertex %d cycle: %v\n", vertex, hasCycle)
 	}
-	return false
+	return !foundCycle
 }
 
 // @lc code=end
