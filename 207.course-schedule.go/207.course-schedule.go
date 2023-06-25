@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 /*
  * @lc app=leetcode id=207 lang=golang
  *
@@ -61,7 +63,40 @@ package main
  */
 
 // @lc code=start
+
+type Adj = [][]int
+
+func dfs(adj Adj, marked map[int]bool, cycleTracker *cycleTracker, v int) bool {
+	marked[v] = true
+	cycleTracker.onStack[v] = true
+	neighbors := adj[v]
+	for _, neighbor := range neighbors {
+		if !marked[neighbor] {
+			curFoundCycle := cycleTracker.onStack[neighbor]
+			return curFoundCycle || dfs(adj, marked, cycleTracker, neighbor)
+		} else if cycleTracker.onStack[neighbor] {
+			return true
+		}
+	}
+	cycleTracker.onStack[v] = false
+	return false
+}
+
+type cycleTracker struct {
+	onStack map[int]bool
+}
+
 func canFinish(numCourses int, prerequisites [][]int) bool {
+	adj := make(Adj, numCourses)
+	for _, prereq := range prerequisites {
+		to, from := prereq[0], prereq[1]
+		adj[from] = append(adj[from], to)
+	}
+	for vertex := range adj {
+		tracker := &cycleTracker{make(map[int]bool)}
+		hasCycle := dfs(adj, make(map[int]bool), tracker, vertex)
+		fmt.Printf("vertex %d cycle: %v\n", vertex, hasCycle)
+	}
 	return false
 }
 
