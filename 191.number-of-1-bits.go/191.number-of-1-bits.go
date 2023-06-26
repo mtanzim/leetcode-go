@@ -73,7 +73,7 @@ import "strconv"
  */
 
 // @lc code=start
-func hammingWeight(num uint32) int {
+func hammingWeightStringManipulation(num uint32) int {
 	binary := strconv.FormatUint(uint64(num), 2)
 	count := 0
 	for _, c := range binary {
@@ -82,6 +82,20 @@ func hammingWeight(num uint32) int {
 		}
 	}
 	return count
+}
+
+// see explanation: https://www.youtube.com/watch?v=5Km3utixwZs&ab_channel=NeetCode
+func hammingWeight(num uint32) int {
+
+	count := 0
+	for num != 0 {
+		if num&1 == 1 {
+			count++
+		}
+		num = num >> 1
+	}
+	return count
+
 }
 
 // @lc code=end
