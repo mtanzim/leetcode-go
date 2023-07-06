@@ -116,18 +116,8 @@ func traverse(dft *dfsTracker, r, c int) {
 }
 
 func orangesRotting(grid [][]int) int {
-	marked := make([][]bool, len(grid))
-	for i := range marked {
-		marked[i] = make([]bool, len(grid[0]))
-	}
-	newGrid := make([][]int, len(grid))
-	for ri, rv := range grid {
-		newGrid[ri] = make([]int, len(rv))
-		for ci := range rv {
-			newGrid[ri][ci] = grid[ri][ci]
-		}
-	}
-	dft := &dfsTracker{newGrid, marked, [][]int{}}
+
+	dft := &dfsTracker{copyGrid(grid), makeMarked(grid), [][]int{}}
 
 	minutes := 0
 
@@ -137,7 +127,6 @@ func orangesRotting(grid [][]int) int {
 
 	for {
 		prevFresh := countFresh(dft.grid)
-
 		for ri, row := range dft.grid {
 			for ci := range row {
 				traverse(dft, ri, ci)
@@ -155,13 +144,29 @@ func orangesRotting(grid [][]int) int {
 		if newFresh == prevFresh {
 			return -1
 		}
-		newMarked := make([][]bool, len(grid))
-		for i := range grid {
-			newMarked[i] = make([]bool, len(grid[0]))
-		}
-		dft.marked = newMarked
+
+		dft.marked = makeMarked(grid)
 		dft.willRot = [][]int{}
 	}
+}
+
+func copyGrid(grid [][]int) [][]int {
+	newGrid := make([][]int, len(grid))
+	for ri, rv := range grid {
+		newGrid[ri] = make([]int, len(rv))
+		for ci := range rv {
+			newGrid[ri][ci] = grid[ri][ci]
+		}
+	}
+	return newGrid
+}
+
+func makeMarked(grid [][]int) [][]bool {
+	newMarked := make([][]bool, len(grid))
+	for i := range grid {
+		newMarked[i] = make([]bool, len(grid[0]))
+	}
+	return newMarked
 }
 
 func countFresh(grid [][]int) int {
