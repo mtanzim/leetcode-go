@@ -83,7 +83,7 @@ type dfsTracker struct {
 }
 
 func traverse(dft *dfsTracker, r, c int) {
-	if (dft.marked[r][c]) {
+	if dft.marked[r][c] {
 		return
 	}
 	maxRow := len(dft.grid) - 1

@@ -28,14 +28,14 @@ func Test_orangesRotting(t *testing.T) {
 		{
 			name: "3 - failing",
 			args: args{
-				grid: [][]int{{1,2}},
+				grid: [][]int{{1, 2}},
 			},
 			want: 1,
 		},
 		{
 			name: "4 - failing",
 			args: args{
-				grid: [][]int{{2,0,1,2,1,2}},
+				grid: [][]int{{2, 0, 1, 2, 1, 2}},
 			},
 			want: 1,
 		},
