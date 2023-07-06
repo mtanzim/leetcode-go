@@ -83,7 +83,9 @@ type dfsTracker struct {
 }
 
 func traverse(dft *dfsTracker, r, c int) {
-
+	if (dft.marked[r][c]) {
+		return
+	}
 	maxRow := len(dft.grid) - 1
 	maxCol := len(dft.grid[0]) - 1
 	dft.marked[r][c] = true
@@ -135,7 +137,12 @@ func orangesRotting(grid [][]int) int {
 
 	for {
 		prevFresh := countFresh(dft.grid)
-		traverse(dft, 0, 0)
+
+		for ri, row := range dft.grid {
+			for ci := range row {
+				traverse(dft, ri, ci)
+			}
+		}
 		minutes++
 		for _, coord := range dft.willRot {
 			rotR, rotC := coord[0], coord[1]
