@@ -89,10 +89,14 @@ func traverse(dft *dfsTracker, r, c int) {
 	isCurRotten := dft.grid[r][c] == rotten
 	for _, neighbor := range neighbors {
 		nR, nC := neighbor[0], neighbor[1]
-		isNeighborEmpty := dft.grid[nR][nC] == empty
-		if dft.marked[nR][nC] || nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || isNeighborEmpty {
+		if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.marked[nR][nC]  {
 			continue
 		}
+		isNeighborEmpty := dft.grid[nR][nC] == empty
+		if isNeighborEmpty {
+			continue
+		}
+
 		traverse(dft, nR, nC)
 		if isCurRotten {
 			dft.grid[nR][nC] = rotten
