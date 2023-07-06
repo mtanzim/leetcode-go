@@ -18,6 +18,13 @@ func Test_orangesRotting(t *testing.T) {
 			},
 			want: 4,
 		},
+		{
+			name: "2 - failing",
+			args: args{
+				grid: [][]int{{2, 1, 1}, {0, 1, 1}, {1, 0, 1}},
+			},
+			want: -1,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

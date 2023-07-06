@@ -77,9 +77,8 @@ const (
 )
 
 type dfsTracker struct {
-	grid         [][]int
-	marked       [][]bool
-	freshOranges int
+	grid   [][]int
+	marked [][]bool
 }
 
 func traverse(dft *dfsTracker, r, c int, willRot bool) {
@@ -89,10 +88,6 @@ func traverse(dft *dfsTracker, r, c int, willRot bool) {
 	maxRow := len(dft.grid) - 1
 	maxCol := len(dft.grid[0]) - 1
 	dft.marked[r][c] = true
-	if dft.grid[r][c] == fresh {
-		dft.freshOranges++
-	}
-
 	neighbors := [][]int{{r + 1, c}, {r - 1, c}, {r, c + 1}, {r, c - 1}}
 	isCurRotten := dft.grid[r][c] == rotten
 	for _, neighbor := range neighbors {
@@ -124,28 +119,43 @@ func orangesRotting(grid [][]int) int {
 			newGrid[ri][ci] = grid[ri][ci]
 		}
 	}
-	dft := &dfsTracker{newGrid, marked, 0}
+	dft := &dfsTracker{newGrid, marked}
 
 	minutes := 0
+
+	if countFresh(grid) == 0 {
+		return minutes
+	}
+
 	for {
-		prevFresh := dft.freshOranges
+		prevFresh := countFresh(dft.grid)
 		traverse(dft, 0, 0, grid[0][0] == rotten)
-		if dft.freshOranges == 0 {
+		minutes++
+		newFresh := countFresh(dft.grid)
+		if newFresh == 0 {
 			return minutes
 		}
-		//
-		if prevFresh == dft.freshOranges {
+		if newFresh == prevFresh {
 			return -1
 		}
-		// reset fresh oranges count and marked
-		dft.freshOranges = 0
 		newMarked := make([][]bool, len(grid))
 		for i := range grid {
 			newMarked[i] = make([]bool, len(grid[0]))
 		}
 		dft.marked = newMarked
-		minutes++
 	}
+}
+
+func countFresh(grid [][]int) int {
+	count := 0
+	for _, row := range grid {
+		for _, v := range row {
+			if v == fresh {
+				count++
+			}
+		}
+	}
+	return count
 }
 
 // @lc code=end
