@@ -92,7 +92,7 @@ func traverse(dft *dfsTracker, r, c int, willRot bool) {
 	isCurRotten := dft.grid[r][c] == rotten
 	for _, neighbor := range neighbors {
 		nR, nC := neighbor[0], neighbor[1]
-		if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.marked[nR][nC]  {
+		if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.marked[nR][nC] {
 			continue
 		}
 		isNeighborEmpty := dft.grid[nR][nC] == empty
@@ -116,8 +116,11 @@ func orangesRotting(grid [][]int) int {
 		}
 	}
 	dft := &dfsTracker{newGrid, marked}
+
+	minutes := 0
 	for {
 		traverse(dft, 0, 0, false)
+		minutes++
 	}
 	return 0
 }
