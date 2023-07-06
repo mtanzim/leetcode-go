@@ -77,34 +77,40 @@ const (
 )
 
 type dfsTracker struct {
-	grid   [][]int
-	marked [][]bool
+	grid    [][]int
+	marked  [][]bool
+	willRot [][]int
 }
 
-func traverse(dft *dfsTracker, r, c int, willRot bool) {
-	if dft.marked[r][c] {
-		return
-	}
+func traverse(dft *dfsTracker, r, c int) {
+
 	maxRow := len(dft.grid) - 1
 	maxCol := len(dft.grid[0]) - 1
 	dft.marked[r][c] = true
 	neighbors := [][]int{{r + 1, c}, {r - 1, c}, {r, c + 1}, {r, c - 1}}
-	isCurRotten := dft.grid[r][c] == rotten
+	filteredNeighbors := [][]int{}
 	for _, neighbor := range neighbors {
 		nR, nC := neighbor[0], neighbor[1]
-		if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.marked[nR][nC] {
+		if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.marked[nR][nC] || dft.grid[nR][nC] == empty {
 			continue
 		}
-		isNeighborEmpty := dft.grid[nR][nC] == empty
-		if isNeighborEmpty {
-			continue
+		filteredNeighbors = append(filteredNeighbors, []int{nR, nC})
+	}
+	// check who will rot
+	if dft.grid[r][c] == rotten {
+		for _, neighbor := range neighbors {
+			nR, nC := neighbor[0], neighbor[1]
+			if nR < 0 || nR > maxRow || nC < 0 || nC > maxCol || dft.grid[nR][nC] == empty {
+				continue
+			}
+			dft.willRot = append(dft.willRot, neighbor)
 		}
-		traverse(dft, nR, nC, isCurRotten)
+	}
+	for _, neighbor := range filteredNeighbors {
+		nR, nC := neighbor[0], neighbor[1]
+		traverse(dft, nR, nC)
+	}
 
-	}
-	if willRot {
-		dft.grid[r][c] = rotten
-	}
 }
 
 func orangesRotting(grid [][]int) int {
@@ -119,7 +125,7 @@ func orangesRotting(grid [][]int) int {
 			newGrid[ri][ci] = grid[ri][ci]
 		}
 	}
-	dft := &dfsTracker{newGrid, marked}
+	dft := &dfsTracker{newGrid, marked, [][]int{}}
 
 	minutes := 0
 
@@ -129,8 +135,12 @@ func orangesRotting(grid [][]int) int {
 
 	for {
 		prevFresh := countFresh(dft.grid)
-		traverse(dft, 0, 0, grid[0][0] == rotten)
+		traverse(dft, 0, 0)
 		minutes++
+		for _, coord := range dft.willRot {
+			rotR, rotC := coord[0], coord[1]
+			dft.grid[rotR][rotC] = rotten
+		}
 		newFresh := countFresh(dft.grid)
 		if newFresh == 0 {
 			return minutes
@@ -143,6 +153,7 @@ func orangesRotting(grid [][]int) int {
 			newMarked[i] = make([]bool, len(grid[0]))
 		}
 		dft.marked = newMarked
+		dft.willRot = [][]int{}
 	}
 }
 
