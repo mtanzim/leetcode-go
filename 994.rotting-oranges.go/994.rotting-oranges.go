@@ -105,12 +105,18 @@ func orangesRotting(grid [][]int) int {
 	for i := range marked {
 		marked[i] = make([]bool, len(grid[0]))
 	}
-	var newGrid [][]int
-	copy(newGrid, grid)
+	newGrid := make([][]int, len(grid))
+	for ri, rv := range grid {
+		newGrid[ri] = make([]int, len(rv))
+		for ci := range rv {
+			newGrid[ri][ci] = grid[ri][ci]
+		}
+	}
 	dft := &dfsTracker{newGrid, marked}
 	for {
 		traverse(dft, 0, 0)
 	}
+	return 0
 }
 
 // @lc code=end
