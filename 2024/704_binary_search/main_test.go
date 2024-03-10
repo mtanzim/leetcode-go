@@ -15,7 +15,7 @@ func Test_search(t *testing.T) {
 		{
 			name: "basic",
 			args: args{
-				nums: []int{-1,0,3,5,9,12},
+				nums:   []int{-1, 0, 3, 5, 9, 12},
 				target: 9,
 			},
 			want: 4,
@@ -23,7 +23,7 @@ func Test_search(t *testing.T) {
 		{
 			name: "failing 1",
 			args: args{
-				nums: []int{5},
+				nums:   []int{5},
 				target: 5,
 			},
 			want: 0,
