@@ -1,6 +1,6 @@
 package main
 
-import "slices"
+import "math"
 
 /*
  * @lc app=leetcode id=198 lang=golang
@@ -57,23 +57,34 @@ import "slices"
  *
  */
 
-func rob(nums []int) int {
-	cache := make(map[int]int)
+func robCached(nums []int, key int, cache map[int]int) int {
 
-	var traverse func(curIdx int, curNums []int) int
-	traverse = func(curIdx int, curNums []int) int {
-		if v, ok := cache[curIdx]; ok {
-			return v
-		}
-		if len(curNums) <= 2 {
-			return slices.Max(curNums)
-		}
-		head, neck, rest := curNums[0], curNums[1], curNums[2:]
-		willRob := head + traverse(curIdx+2, rest)
-		willNotRob := traverse(curIdx+1, append([]int{neck}, rest...))
-		curRes := slices.Max([]int{willRob, willNotRob})
-		cache[curIdx] = curRes
-		return curRes
+	if v, ok := cache[key]; ok {
+		return v
 	}
-	return traverse(0, nums)
+
+	if len(nums) == 0 {
+		return 0
+	}
+	if len(nums) == 1 {
+		return nums[0]
+	}
+	if len(nums) == 2 {
+		return int(math.Max(float64(nums[0]), float64(nums[1])))
+	}
+	head := nums[0]
+	skipThis := nums[1:]
+	robThis := nums[2:]
+	l := robCached(skipThis, key+1, cache)
+	r := robCached(robThis, key+2, cache)
+	if l > r+head {
+		cache[key] = l
+		return l
+	}
+	cache[key] = r + head
+	return r + head
+}
+
+func rob(nums []int) int {
+	return robCached(nums, 0, make(map[int]int))
 }
