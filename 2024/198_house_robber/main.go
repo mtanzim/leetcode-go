@@ -1,6 +1,6 @@
 package main
 
-import "math"
+import "slices"
 
 /*
  * @lc app=leetcode id=198 lang=golang
@@ -58,21 +58,22 @@ import "math"
  */
 
 func rob(nums []int) int {
-	if len(nums) == 0 {
-		return 0
+	cache := make(map[int]int)
+
+	var traverse func(curIdx int, curNums []int) int
+	traverse = func(curIdx int, curNums []int) int {
+		if v, ok := cache[curIdx]; ok {
+			return v
+		}
+		if len(curNums) <= 2 {
+			return slices.Max(curNums)
+		}
+		head, neck, rest := curNums[0], curNums[1], curNums[2:]
+		willRob := head + traverse(curIdx+2, rest)
+		willNotRob := traverse(curIdx+1, append([]int{neck}, rest...))
+		curRes := slices.Max([]int{willRob, willNotRob})
+		cache[curIdx] = curRes
+		return curRes
 	}
-	if len(nums) == 1 {
-		return nums[0]
-	}
-	if len(nums) == 2 {
-		return int(math.Max(float64(nums[0]), float64(nums[1])))
-	}
-	skipThis := nums[1:]
-	robThis := nums[2:]
-	l := rob(skipThis)	
-	r := rob(robThis)	
-	if l > r {
-		return l
-	}
-	return r + nums[0] 
+	return traverse(0, nums)
 }
